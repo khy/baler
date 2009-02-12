@@ -1,7 +1,7 @@
-require 'lib/adapter/hpricot'
-
 module Baler
   module Parser
+    autoload :Adapter, File.dirname(__FILE__) + '/parser/adapter'
+    
     ADAPTERS = {:hpricot => Adapter::Hpricot}
     NAMES = ADAPTERS.keys
   

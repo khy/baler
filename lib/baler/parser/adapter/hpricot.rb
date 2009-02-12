@@ -1,6 +1,5 @@
-require 'lib/adapter/abstract'
-require 'hpricot'
 require 'open-uri'
+require 'hpricot'
 
 module Baler
   module Parser

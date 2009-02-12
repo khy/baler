@@ -1,11 +1,9 @@
-require 'lib/remote'
-
 module Baler
   module Base
     module ClassMethods
       def set_remote_source(url)
         remote_source = Baler::Remote::Source.new(url)
-        yield remote_source
+        yield remote_source if block_given?
         instance_variable_set(:@remote_source, remote_source)
       end
       
