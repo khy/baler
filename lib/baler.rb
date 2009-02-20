@@ -9,3 +9,5 @@ module Baler
     base.extend Base::ClassMethods
   end
 end
+
+require File.dirname(__FILE__) + '/baler/error'
