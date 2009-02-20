@@ -3,6 +3,6 @@ module Baler
     
   module Parser
     class Error < Baler::Error; end
-    class InvalidOptionError < Error; end
+    class InvalidNameError < Error; end
   end
 end

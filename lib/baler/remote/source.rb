@@ -22,10 +22,15 @@ module Baler
         parser.value_for mapping
       end
     
-      def using(parser)
-        config.parser = parser
+      def parser_name=(parser_name)
+        config.parser_name = parser_name
       end
-
+      alias uses parser_name=
+      
+      def parser_name
+        config.parser_name
+      end
+      
       def parser
         @parser ||= Parser.for self
       end

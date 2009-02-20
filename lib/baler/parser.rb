@@ -1,12 +1,13 @@
 module Baler
   module Parser
-    autoload :Adapter, File.dirname(__FILE__) + '/parser/adapter'
+    autoload :Abstract, File.dirname(__FILE__) + '/parser/abstract'
+    autoload :Hpricot, File.dirname(__FILE__) + '/parser/hpricot'
     
-    ADAPTERS = {:hpricot => Adapter::Hpricot}
-    NAMES = ADAPTERS.keys
-  
+    OPTIONS = {:hpricot => Hpricot}
+    NAMES = OPTIONS.keys
+    
     def self.for(source)
-      ADAPTERS[source.config.parser].new(source.url)
+      OPTIONS[source.config.parser_name].new(source)
     end
   end
 end

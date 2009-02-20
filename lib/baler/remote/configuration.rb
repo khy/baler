@@ -1,16 +1,16 @@
 module Baler
   module Remote
     class Configuration
-      DEFAULT_PARSER = Parser::NAMES.first
+      DEFAULT_PARSER_NAME = Parser::NAMES.first
     
-      attr_accessor :parser
+      attr_accessor :parser_name
     
-      def initialize(parser = DEFAULT_PARSER)
-        unless Parser::NAMES.include?(parser)
-          raise Baler::Parser::InvalidOptionError
+      def initialize(parser_name = DEFAULT_PARSER_NAME)
+        unless Parser::NAMES.include?(parser_name)
+          raise Baler::Parser::InvalidNameError
         end
         
-        @parser = parser
+        @parser_name = parser_name
       end
     end
   end
