@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-class Game
+class BasicGame
   include Baler
   
   attr_accessor :date, :home_team, :visiting_team,
@@ -16,9 +16,9 @@ class Game
   end
 end
 
-describe Game do
+describe 'basic Baler setup' do
   before(:each) do
-    @game = Game.new
+    @game = BasicGame.new
   end
   
   describe 'after initialization' do
