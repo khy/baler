@@ -2,7 +2,7 @@ module Baler
   module Remote
     class Source
       attr_accessor :url
-      attr_reader :mappings, :configuration
+      attr_reader :mappings, :configuration, :context
       alias config configuration 
 
       def initialize(url)
@@ -16,6 +16,10 @@ module Baler
           @mappings << Mapping.new(self, attribute, path)
         end
         @mappings
+      end
+    
+      def set_context(context)
+        @context = context
       end
     
       def value_for(mapping)

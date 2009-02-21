@@ -8,7 +8,7 @@ module Baler
       end
       
       def value_for(mapping)
-        if element = doc.at(mapping.path)
+        if element = doc.at(mapping.absolute_path)
           element.inner_html
         end
       end

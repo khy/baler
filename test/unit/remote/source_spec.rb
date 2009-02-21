@@ -48,6 +48,13 @@ describe Baler::Remote::Source do
     end
   end
   
+  describe '#set_context' do
+    it 'should set the source\'s context attribute' do
+      @source.set_context 'html > body > ol > li'
+      @source.context.should == 'html > body > ol > li'
+    end
+  end
+  
   describe '#value_for(mapping)' do
     it 'should delegate to the parser object' do
       @source.should_receive(:parser).any_number_of_times.and_return(mock('parser'))

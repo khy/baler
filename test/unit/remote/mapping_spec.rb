@@ -20,6 +20,46 @@ describe Baler::Remote::Mapping do
     end
   end
   
+  describe '#relative_path' do
+    it 'should return path if its source does not have a context' do
+      @source.set_context nil
+      @mapping.path = 'html > body > ol > li > h1'
+      @mapping.relative_path.should == 'html > body > ol > li > h1'
+    end
+    
+    it 'should return path if it does not begin with its source\'s context' do
+      @source.set_context 'html > body > ol > li'
+      @mapping.path = 'h1'
+      @mapping.relative_path.should == 'h1'
+    end
+    
+    it 'should return descendant selector in path if it includes its source\'s context' do
+      @source.set_context 'html > body > ol > li'
+      @mapping.path = 'html > body > ol > li h1'
+      @mapping.relative_path.should == 'h1'
+    end
+  end
+  
+  describe '#absolute_path' do
+    it 'should return path if source does not have a context' do
+      @source.set_context nil
+      @mapping.path = 'html > body > ol > li > h1'
+      @mapping.absolute_path.should == 'html > body > ol > li > h1'
+    end
+    
+    it 'should return path if it includes the source\'s context' do
+      @source.set_context 'html > body > ol > li'
+      @mapping.path = 'html > body > ol > li > h1'
+      @mapping.absolute_path.should == 'html > body > ol > li > h1'
+    end
+    
+    it 'should return context with path if path does not include context' do
+      @source.set_context 'html > body > ol > li'
+      @mapping.path = '> h1'
+      @mapping.absolute_path.should == 'html > body > ol > li > h1'
+    end
+  end
+  
   describe '#value' do
     it 'should call #value_for on source' do
       @source.should_receive(:value_for).once.with(@mapping)

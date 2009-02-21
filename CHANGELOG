@@ -1,1 +1,4 @@
+*edge*
+* [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
+
 *0.1.0* [02/07/09] - Initial release
