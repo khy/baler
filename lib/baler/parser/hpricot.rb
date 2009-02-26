@@ -7,10 +7,18 @@ module Baler
         super(source)
       end
       
-      def value_for(mapping)
-        if element = doc.at(mapping.absolute_path)
-          element.inner_html
+      def value_for(path, context_index = 0)
+        if context_element = context[context_index]
+          elements = context_element.search(strip_context(path))
+          
+          unless elements.empty?
+            elements.map{|element| element.inner_html}.array_or_element
+          end
         end
+      end
+      
+      def context
+        @context ||= doc.search(source.context)
       end
       
       protected

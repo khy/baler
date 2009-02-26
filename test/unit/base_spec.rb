@@ -62,17 +62,21 @@ describe Baler::Base::InstanceMethods do
     it 'should return the instance on which it is being called' do
       @example.gather.should == @example
     end
-    
-    it 'should, for each of its class\'s remote source mappings, 
-        assign the value to the associated attribute' do
-      remote_source = stub('remote_source', :mappings => [
-        stub('mapping', :attribute => 'apple', :value => 'rotten'), 
-        stub('mapping', :attribute => 'pear', :value => 'delicious')
-      ])
+
+    it 'should delegate to the class\'s remote source with the instance and a 
+        context index of 0 (since none was specified)' do
+      remote_source = stub('remote_source')
+      remote_source.should_receive(:gather).once.with(@example, 0)
       Example.should_receive(:remote_source).and_return(remote_source)
-      @example.should_receive(:apple=).with('rotten')
-      @example.should_receive(:pear=).with('delicious')
       @example.gather
+    end
+    
+    it 'should delegate to that class\'s remote source with the instance and the 
+        the specified context index' do
+      remote_source = stub('remote_source')
+      remote_source.should_receive(:gather).once.with(@example, 4)
+      Example.should_receive(:remote_source).and_return(remote_source)
+      @example.gather(4)
     end
   end
 end

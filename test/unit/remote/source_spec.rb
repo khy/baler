@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Baler::Remote::Source do
   before(:each) do
-    @source = Baler::Remote::Source.new('jah.com')
+    @source = Baler::Remote::Source.new(mock('class'), 'jah.com')
   end
   
   describe 'after initialization' do
@@ -31,7 +31,7 @@ describe Baler::Remote::Source do
     
     it 'should add the new mapping to the source\'s mappings' do
       new_mapping = mock('mapping')
-      Baler::Remote::Mapping.should_receive(:new).and_return(new_mapping)
+      Baler::Remote::Mapping.stub!(:new).and_return(new_mapping)
       @source.map(:apple => 'html > base > h1')
       @source.mappings.should include(new_mapping)
     end
@@ -54,15 +54,7 @@ describe Baler::Remote::Source do
       @source.context.should == 'html > body > ol > li'
     end
   end
-  
-  describe '#value_for(mapping)' do
-    it 'should delegate to the parser object' do
-      @source.should_receive(:parser).any_number_of_times.and_return(mock('parser'))
-      @source.parser.should_receive(:value_for).with(:apple).and_return('McIntosh')
-      @source.value_for(:apple).should == 'McIntosh'
-    end
-  end
-  
+
   describe '#uses(parser)' do
     it 'should set the config object\'s parser attribute' do
       @source.uses :jah

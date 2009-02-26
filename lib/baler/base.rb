@@ -2,7 +2,7 @@ module Baler
   module Base
     module ClassMethods
       def set_remote_source(url)
-        remote_source = Baler::Remote::Source.new(url)
+        remote_source = Baler::Remote::Source.new(self, url)
         yield remote_source if block_given?
         instance_variable_set(:@remote_source, remote_source)
       end
@@ -13,13 +13,9 @@ module Baler
     end
     
     module InstanceMethods
-      def gather
-        self.class.remote_source.mappings.each do |mapping|
-          send("#{mapping.attribute}=", mapping.value)
-        end
-        self
+      def gather(context_index = 0)
+        self.class.remote_source.gather(self, context_index)
       end
-      alias_method :harvest, :gather
     end
   end
 end

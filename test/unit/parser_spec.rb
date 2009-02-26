@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Baler::Parser do
   describe '.for' do
     before(:each) do
-      @source = Baler::Remote::Source.new('jah.com')
+      @source = Baler::Remote::Source.new(mock('class'), 'jah.com')
     end
     
     it 'should return an instance of the parser corresponding to the name specified by the source' do
@@ -13,7 +13,6 @@ describe Baler::Parser do
     end
     
     it 'should return a parser with the specified source' do
-      @source = Baler::Remote::Source.new('jah.com')
       Baler::Parser.for(@source).source.should == @source
     end
   end

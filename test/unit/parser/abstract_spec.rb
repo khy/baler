@@ -10,7 +10,7 @@ end
 
 describe Baler::Parser::Abstract do
   before(:each) do
-    @source = Baler::Remote::Source.new('jah.com')
+    @source = Baler::Remote::Source.new(mock('class'), 'jah.com')
     @parser = Baler::Parser::Hpricot.new(@source)
   end
   
