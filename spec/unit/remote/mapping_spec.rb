@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe Baler::Remote::Mapping do
   before(:each) do
-    @source = Baler::Remote::Source.new('jah.com')
+    @source = Baler::Remote::Source.new(mock('class'), 'jah.com')
     @mapping = Baler::Remote::Mapping.new(@source, :apple, 'html > body > h1')
   end
   
@@ -17,6 +17,18 @@ describe Baler::Remote::Mapping do
     
     it 'should have the specified path' do
       @mapping.path.should == 'html > body > h1'
+    end
+  end
+  
+  describe '#path=(path)' do
+    it 'should remove leading and tailing whitespace' do
+      @mapping.path = '   html > h1   '
+      @mapping.path.should == 'html > h1'
+    end
+    
+    it 'should remove repeated spaces from with the path' do
+      @mapping.path = 'html  >   h1'
+      @mapping.path.should == 'html > h1'
     end
   end
   
@@ -57,13 +69,6 @@ describe Baler::Remote::Mapping do
       @source.set_context 'html > body > ol > li'
       @mapping.path = '> h1'
       @mapping.absolute_path.should == 'html > body > ol > li > h1'
-    end
-  end
-  
-  describe '#value' do
-    it 'should call #value_for on source' do
-      @source.should_receive(:value_for).once.with(@mapping)
-      @mapping.value
     end
   end
 end
