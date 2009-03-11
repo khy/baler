@@ -10,6 +10,10 @@ module Baler
       def remote_source
         instance_variable_get(:@remote_source)
       end
+      
+      def build
+        remote_source.build
+      end
     end
     
     module InstanceMethods
