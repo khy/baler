@@ -3,8 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 class ContextGame
   include Baler
   
-  attr_accessor :date, :home_team, :visiting_team,
-    :home_score, :visiting_score, :mvp
+  attr_accessor :date, :home_team, :home_score, :mvp
     
   set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
     source.set_context 'html > body > ol > li'
@@ -15,38 +14,32 @@ class ContextGame
   end
 end
 
-describe 'Baler setup with context' do
+describe 'Baler context functionality' do
   before(:each) do
     @game = ContextGame.new
   end
   
-  describe 'after initialization' do
-    it 'should have no attributes with a value' do
-      @game.date.should be_nil
-      @game.home_team.should be_nil
-      @game.home_score.should be_nil
-      @game.mvp.should be_nil
-    end
-  end
-  
-  describe '#date' do
-    it 'should have the mapped data after it is gathered' do
+  describe '#gather' do
+    it 'should assign attributes data relative to the specified context' do
       @game.gather
       @game.date.should == 'Tuesday, February 3rd'
     end
-  end
-
-  describe '#home_team' do
-    it 'should have the mapped data after it is gathered' do
+    
+    it 'should assign attributes even if an absolute path is given with a context' do
       @game.gather
       @game.home_team.should == 'Los Angeles Lakers'
     end
-  end
-
-  describe '#home_score' do
-    it 'should have no data after it is gathered (since its mapped element is non-existant)' do
+    
+    it 'should assign nil to attributes mapped to nonexistant data' do
+      @game.home_score = 112
       @game.gather
       @game.home_score.should be_nil
+    end
+    
+    it 'shouldn\'t have any affect on unmapped attributes' do
+      @game.mvp = 'Dwight Howard'
+      @game.gather
+      @game.mvp.should == 'Dwight Howard'
     end
   end
 end
