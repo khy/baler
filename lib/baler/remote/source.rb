@@ -2,14 +2,12 @@ module Baler
   module Remote
     class Source
       attr_accessor :url
-      attr_reader :master, :mappings, :configuration, :context
-      alias config configuration 
+      attr_reader :master, :mappings
 
       def initialize(master, url)
         @master = master
         @url = url
         @mappings = []
-        @configuration = Configuration.new
       end
   
       def map(attribute_map)
@@ -19,38 +17,44 @@ module Baler
         @mappings
       end
 
-      def gather(instance, context_index = 0)
+      def gather(instance, index = 0)
         mappings.each do |mapping|
-          instance.send("#{mapping.attribute}=", mapping.value_for(path, context_index))
+          instance.send("#{mapping.attribute}=", mapping.value(index))
         end
         instance
       end
         
       def build
-        instances = []
-        (0...parser.context.length).each do |context_index|
-          instance = @master.new
-          instance.gather(context_index)
-          instances << instance
+        Array.new(context.size) do |context_index| 
+          master.new.gather(context_index)
         end
       end
         
-      def set_context(context)
-        @context = context
+      def set_context(path)
+        context.path = path
       end
       
-      def parser_name=(parser_name)
-        config.parser_name = parser_name
+      def uses(parser_type)
+        parser.type = parser_type
       end
-      alias uses parser_name=
+      alias set_parser uses
       
-      def parser_name
-        config.parser_name
+      def context
+        @context ||= Context.new(self)
       end
       
       def parser
-        @parser ||= Parser.for self
+        @parser ||= Parser.new(self)
       end
+      
+      def document
+        parser.document
+      end
+      
+      def config
+        @config ||= Configuration.new(self)
+      end
+      alias configuration config
     end
   end
 end

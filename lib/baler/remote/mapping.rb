@@ -1,12 +1,17 @@
 module Baler
   module Remote
     class Mapping
-      attr_accessor :source, :attribute, :path
+      attr_reader :path
+      attr_accessor :source, :attribute
 
       def initialize(source, attribute, path)
         @source = source
         @attribute = attribute
-        @path = path
+        self.path = path
+      end
+      
+      def path=(path)
+        @path = path.squeeze(' ').strip
       end
 
       def relative_path
@@ -14,16 +19,20 @@ module Baler
       end
 
       def absolute_path
-        "#{@source.context} #{path_without_context}".strip
+        [@source.context.path, path_without_context].join(' ')
       end
 
-      def value
-        @source.value_for self
+      def elements(index = 0)
+        @source.document.relative_elements_for(relative_path, index)
+      end
+      
+      def value(index = 0)
+        elements(index).map{|element| element.inner_html}.element_or_array
       end
       
       private
         def path_without_context
-          @path.sub(/^#{@source.context}/, '').strip
+          @path.sub(/^#{@source.context.path}/, '')
         end
     end
   end

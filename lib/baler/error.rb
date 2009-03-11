@@ -1,8 +1,8 @@
 module Baler
   class Error < ::StandardError; end
     
-  module Parser
+  class Parser
     class Error < Baler::Error; end
-    class InvalidNameError < Error; end
+    class InvalidTypeError < Error; end
   end
 end

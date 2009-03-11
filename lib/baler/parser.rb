@@ -1,13 +1,42 @@
 module Baler
-  module Parser
-    autoload :Abstract, File.dirname(__FILE__) + '/parser/abstract'
-    autoload :Hpricot, File.dirname(__FILE__) + '/parser/hpricot'
+  class Parser
+    autoload :Document, File.dirname(__FILE__) + '/parser/document'
+    autoload :Element, File.dirname(__FILE__) + '/parser/element'
     
-    OPTIONS = {:hpricot => Hpricot}
-    NAMES = OPTIONS.keys
+    TYPES = [:hpricot]
+    DEFAULT_TYPE = Parser::TYPES.first
     
-    def self.for(source)
-      OPTIONS[source.config.parser_name].new(source)
+    attr_accessor :source
+    
+    def initialize(source)
+      @source = source
+    end
+
+    def type
+      @type || DEFAULT_TYPE
+    end
+
+    def type=(type)
+      unless TYPES.include?(type)
+        raise Baler::Parser::InvalidTypeError
+      end
+      
+      @type = type
+    end
+
+    def document
+      @document ||= Document.for(type, source.url, source.context.path)
+    end
+    
+    module Search
+      def search(path, index = nil)
+        Search.normalize(raw_search(path), index)
+      end
+        
+      def self.normalize(raw_array, index = nil)
+        normalize_array = raw_array.map{|element| Element.for(element)}
+        normalize_array[index ? index..index : 0..-1]
+      end
     end
   end
 end
