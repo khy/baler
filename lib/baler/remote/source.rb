@@ -17,7 +17,7 @@ module Baler
         @mappings
       end
 
-      def gather(instance, index = 0)
+      def gather(instance, index = nil)
         mappings.each do |mapping|
           instance.send("#{mapping.attribute}=", mapping.value(index))
         end

@@ -12,13 +12,9 @@ module Baler
         end
 
         def relative_elements_for(path, index = nil)
-          (has_context? and index) ?
-            context_element(index).search(path) :
-            absolute_elements_for(full_path(path), index)
-        end
-
-        def full_path(path)
-          @context? "#@context + #{path}" : path
+          @context_path ?
+            context_element(index || 0).search(path) :
+            absolute_elements_for(path, index)
         end
 
         def absolute_elements_for(path, index = nil)
@@ -27,10 +23,6 @@ module Baler
       
         def context_element(index)
           search(@context_path, index).first
-        end
-
-        def has_context?
-          !@context_path.nil?
         end
 
         protected

@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 class ContextGame
   include Baler
   
-  attr_accessor :date, :home_team, :home_score, :mvp
+  attr_accessor :date, :home_team, :home_score, :mvp, :referees
     
   set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
     source.set_context 'html > body > ol > li'
@@ -11,6 +11,7 @@ class ContextGame
     source.map :date => '> span.date'
     source.map :home_team => 'html > body > ol > li > span.team.home'
     source.map :home_score => 'ol > span.score.home'
+    source.map :referees => '> ul.referees > li'
   end
 end
 
@@ -20,7 +21,8 @@ describe 'Baler context functionality' do
   end
   
   describe '#gather' do
-    it 'should assign attributes data relative to the specified context' do
+    it 'should assign attributes data relative to the first defined context,
+        if no index is specified' do
       @game.gather
       @game.date.should == 'Tuesday, February 3rd'
     end
@@ -30,10 +32,27 @@ describe 'Baler context functionality' do
       @game.home_team.should == 'Los Angeles Lakers'
     end
     
+    it 'should assign attributes data relative to the context specified by the index' do
+      @game.gather(2)
+      @game.date.should == 'Friday, February 6th'
+      @game.home_team.should == 'Memphis Grizzlies'
+    end
+    
+    it 'should assign all data within a context to the mapped attribute' do
+      @game.gather
+      @game.referees.should == ["Joe Crawford", "Dick Bavetta"]
+    end
+    
     it 'should assign nil to attributes mapped to nonexistant data' do
       @game.home_score = 112
       @game.gather
       @game.home_score.should be_nil
+    end
+    
+    it 'should assign nil to attributes that don\'t exist in the specified context' do
+      @game.referees = 'stub'
+      @game.gather(1)
+      @game.referees.should be_nil
     end
     
     it 'shouldn\'t have any affect on unmapped attributes' do
