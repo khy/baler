@@ -1,4 +1,5 @@
-*edge*
-* [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
+*edge*  [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
+        [03/10/09] - implemented class method #build that returns an array of instances, once for each
+                     context with the appropriate attribute values gathered
 
 *0.1.0* [02/07/09] - Initial release
