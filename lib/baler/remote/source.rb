@@ -10,9 +10,11 @@ module Baler
         @mappings = []
       end
   
-      def map(attribute_map)
+      def map(attribute_map, &block)
         attribute_map.each do |attribute, path|
-          @mappings << Mapping.new(self, attribute, path)
+          new_mapping = Mapping.new(self, attribute, path)
+          new_mapping.block = block
+          @mappings << new_mapping
         end
         @mappings
       end

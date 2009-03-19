@@ -1,5 +1,7 @@
-*edge*  [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
+*0.2.0* [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
         [03/10/09] - implemented class method #build that returns an array of instances, once for each
                      context with the appropriate attribute values gathered
+        [03/18/09] - implemented functionality for passing blocks to mappings. The array of specified
+                     elements are passed to the block before the value is assigned to the attribute.
 
 *0.1.0* [02/07/09] - Initial release

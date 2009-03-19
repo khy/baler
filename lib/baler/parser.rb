@@ -34,8 +34,8 @@ module Baler
       end
         
       def self.normalize(raw_array, index = nil)
-        normalize_array = raw_array.map{|element| Element.for(element)}
-        index ? ([normalize_array[index]].compact) : normalize_array
+        raw_array.map!{|element| Element.for(element)}
+        Element::Array.new(index ? ([raw_array[index]].compact) : raw_array)
       end
     end
   end

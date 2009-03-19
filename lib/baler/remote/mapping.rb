@@ -2,7 +2,10 @@ module Baler
   module Remote
     class Mapping
       attr_reader :path
+      attr_writer :block
       attr_accessor :source, :attribute
+
+      DEFAULT_BLOCK = Proc.new{|elements| elements.inner_html}
 
       def initialize(source, attribute, path)
         @source = source
@@ -12,6 +15,10 @@ module Baler
       
       def path=(path)
         @path = path.squeeze(' ').strip
+      end
+
+      def block
+        @block ||= DEFAULT_BLOCK
       end
 
       def relative_path
@@ -27,7 +34,9 @@ module Baler
       end
       
       def value(index = 0)
-        elements(index).map{|element| element.inner_html}.element_or_array
+        elements = elements(index)
+        result = block.call(elements) unless elements.empty?
+        (result.is_a?(Array) and result.length <= 1) ? result.first : result
       end
       
       private
