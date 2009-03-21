@@ -15,6 +15,19 @@ class ContextGame
   end
 end
 
+class InvalidContextGame
+  include Baler
+  
+  attr_accessor :date, :home_team
+    
+  set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
+    source.set_context 'html > body > ol > li > jah'
+    
+    source.map :date => '> span.date'
+    source.map :home_team => 'html > body > ol > li > span.team.home'
+  end  
+end
+
 describe 'Baler context functionality' do
   before(:each) do
     @game = ContextGame.new
@@ -59,6 +72,15 @@ describe 'Baler context functionality' do
       @game.mvp = 'Dwight Howard'
       @game.gather
       @game.mvp.should == 'Dwight Howard'
+    end
+    
+    it 'should assign nil values to attributes when no element corresponds to context' do
+      @invalid_game = InvalidContextGame.new
+      @invalid_game.date = '1/2/09'
+      @invalid_game.home_team = 'Orlando Magic'
+      @invalid_game.gather
+      @invalid_game.date.should be_nil
+      @invalid_game.home_team.should be_nil
     end
   end
 end

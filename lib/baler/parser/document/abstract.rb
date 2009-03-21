@@ -12,9 +12,8 @@ module Baler
         end
 
         def relative_elements_for(path, index = nil)
-          @context_path ?
-            context_element(index || 0).search(path) :
-            absolute_elements_for(path, index)
+          return absolute_elements_for(path, index) unless @context_path
+          context_element(index || 0).try.search(path) || Parser::Element::Array.new
         end
 
         def absolute_elements_for(path, index = nil)

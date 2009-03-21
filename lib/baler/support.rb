@@ -1,5 +1,21 @@
 module Baler
   module Support
+    module Object
+      def try
+        Try.new(self)
+      end
+      
+      class Try
+        def initialize(receiver)
+          @receiver = receiver
+        end
+        
+        def method_missing(method, *args, &block)
+          @receiver.__send__(method, *args, &block) if @receiver.respond_to?(method)
+        end
+      end    
+    end    
+
     module Hash
       def compose(other_hash)
         new_hash = self.clone
@@ -7,6 +23,10 @@ module Baler
       end
     end
   end
+end
+
+class Object
+  include Baler::Support::Object
 end
 
 class Hash
