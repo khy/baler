@@ -11,7 +11,8 @@ module Baler
         end
         
         def method_missing(method, *args, &block)
-          @receiver.__send__(method, *args, &block) if @receiver.respond_to?(method)
+          @receiver.respond_to?(method) ?
+            @receiver.__send__(method, *args, &block) : @receiver
         end
       end    
     end    

@@ -36,7 +36,7 @@ module Baler
       def value(index = 0)
         elements = elements(index)
         result = block.call(elements) unless elements.empty?
-        (result.is_a?(Array) and result.length <= 1) ? result.first : result
+        (result.is_a?(Array) and result.length <= 1) ? result.first : result.try.to_array
       end
       
       private

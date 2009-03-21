@@ -20,11 +20,15 @@ describe 'basic Baler functionality' do
   end
 
   describe '#gather' do
-    it 'should assign all the data mapped to the attributes, 
-        if no index is specified' do
+    it 'should assign all the data mapped to the attributes, if no index is specified' do
       @game.gather
       @game.date.should == ["Tuesday, February 3rd", "Wednesday, February 4th", "Friday, February 6th"]
       @game.home_team.should == ["Los Angeles Lakers", "New York Knicks", "Memphis Grizzlies"]
+    end
+    
+    it 'should return a standard array if multiple values are found' do
+      @game.gather
+      @game.date.should be_an_instance_of(Array)
     end
     
     it 'should assign the data (specified by index) mapped to the attributes' do
