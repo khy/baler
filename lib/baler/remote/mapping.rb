@@ -18,7 +18,7 @@ module Baler
       end
 
       def block
-        @block ||= DEFAULT_BLOCK
+        @block || DEFAULT_BLOCK
       end
 
       def relative_path

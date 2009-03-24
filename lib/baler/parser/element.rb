@@ -16,10 +16,10 @@ module Baler
           ::Array.new(self)
         end
         
-        alias_method :old_respond_to?, :respond_to?
+        alias_method :super_respond_to?, :respond_to?
         def respond_to?(symbol, include_private = false)
           !!(first.respond_to?(symbol, include_private) || 
-             old_respond_to?(symbol, include_private))
+             super_respond_to?(symbol, include_private))
         end
 
         protected
