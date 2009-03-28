@@ -3,11 +3,12 @@ require File.dirname(__FILE__) + '/spec_helper'
 class ContextGame
   include Baler
   
-  attr_accessor :date, :home_team, :home_score, :mvp, :referees
+  attr_accessor :league, :date, :home_team, :home_score, :mvp, :referees
     
   set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
     source.set_context 'html > body > ol > li'
     
+    source.map :league => 'h1.global', :context => false
     source.map :date => '> span.date'
     source.map :home_team => 'html > body > ol > li > span.team.home'
     source.map :home_score => 'ol > span.score.home'
@@ -81,6 +82,11 @@ describe 'Baler context functionality' do
       @invalid_game.gather
       @invalid_game.date.should be_nil
       @invalid_game.home_team.should be_nil
+    end
+    
+    it 'should forgo the context if directed to' do
+      @game.gather
+      @game.league.should == 'National Basketball Association'
     end
   end
 end

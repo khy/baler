@@ -1,6 +1,10 @@
+require 'forwardable'
+
 module Baler
   module Remote
     class Source
+      extend Forwardable
+      
       attr_accessor :url, :mappings
       attr_reader :master
 
@@ -30,9 +34,10 @@ module Baler
         @builder ||= Builder.new(self)
       end
       
-      def add_mapping(attribute, path, block)
+      def add_mapping(attribute, path, block = nil, context = true)
         new_mapping = Remote::Mapping.new(self, attribute, path)
-        new_mapping.block = block
+        new_mapping.block = block unless block.nil?
+        new_mapping.context = context unless context.nil?
         mappings << new_mapping
       end
       
@@ -49,14 +54,18 @@ module Baler
         end
       end
       
+      def_delegator(:document, :relative_elements_for, :relative_elements_for)
+      def_delegator(:document, :absolute_elements_for, :absolute_elements_for)
+      
       class Builder
         def initialize(source)
           @source = source
         end
 
-        def map(attribute_map, &block)
-          attribute_map.each do |attribute, path|
-            @source.add_mapping(attribute, path, block)
+        def map(options, &block)
+          context = options.delete(:context)
+          options.each do |attribute, path|
+            @source.add_mapping(attribute, path, block, context)
           end
           @source
         end

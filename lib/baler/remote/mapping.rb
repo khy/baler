@@ -1,7 +1,7 @@
 module Baler
   module Remote
     class Mapping
-      attr_reader :path
+      attr_reader :path, :context
       attr_writer :block
       attr_accessor :source, :attribute
 
@@ -11,6 +11,7 @@ module Baler
         @source = source
         @attribute = attribute
         self.path = path
+        @context = true
       end
       
       def path=(path)
@@ -21,6 +22,12 @@ module Baler
         @block || DEFAULT_BLOCK
       end
 
+      def context=(context)
+        @context = !!(context)
+      end
+
+      alias use_context? context
+
       def relative_path
         path_without_context
       end
@@ -30,7 +37,9 @@ module Baler
       end
 
       def elements(index = 0)
-        @source.document.relative_elements_for(relative_path, index)
+        use_context? ?
+          @source.document.relative_elements_for(relative_path, index) :
+          @source.document.absolute_elements_for(relative_path)
       end
       
       def value(index = 0)

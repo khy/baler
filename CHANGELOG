@@ -1,3 +1,5 @@
+*edge*  [03/28/09] - added ability for mappings to forgo their source's context
+
 *0.2.0* [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
         [03/10/09] - implemented class method #build that returns an array of instances, once for each
                      context with the appropriate attribute values gathered
