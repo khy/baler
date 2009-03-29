@@ -1,4 +1,7 @@
 *edge*  [03/28/09] - added ability for mappings to forgo their source's context
+        [03/29/09] - implemented conditional gathering. The source can define the conditions
+                     for when it should or should not gather remote info, using #gather_if and
+                     #gather_unless
 
 *0.2.0* [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
         [03/10/09] - implemented class method #build that returns an array of instances, once for each

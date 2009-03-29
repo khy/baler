@@ -17,8 +17,8 @@ module Baler
     end
     
     module InstanceMethods
-      def gather(index = nil)
-        self.class.remote_source.gather(self, index)
+      def gather(index = nil, options = {})
+        self.class.remote_source.gather(self, index, options)
       end
     end
   end
