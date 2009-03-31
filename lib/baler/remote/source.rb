@@ -50,7 +50,7 @@ module Baler
       
       def gather(instance, index = nil, *attributes)
         options = attributes.extract_options
-        if gather_conditions_pass?(instance) or options[:force]
+        if gather_conditions_met?(instance) or options[:force]
           mappings.each do |mapping|
             if attributes.empty? or attributes.include?(mapping.attribute)
               instance.__send__("#{mapping.attribute}=", mapping.value(index))
@@ -70,8 +70,8 @@ module Baler
       def_delegator(:document, :absolute_elements_for, :absolute_elements_for)
       
       private
-        def gather_conditions_pass?(instance)
-          gather_conditions.all?{|gather_condition| gather_condition.passes?(instance)}
+        def gather_conditions_met?(instance)
+          gather_conditions.all?{|gather_condition| gather_condition.met?(instance)}
         end
     end
   end

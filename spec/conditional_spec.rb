@@ -11,10 +11,10 @@ class ConditionalGame
     
     source.map :home_team => 'html > body > ol > li > span.team.home'
     
-    source.gather_if {|game| game.a == 1}
+    source.gather_if {a == 1}
     source.gather_if :b_equals_two, :c_equals_three
     
-    source.gather_unless{|game| game.d == 4}
+    source.gather_unless{d == 4}
     source.gather_unless :e_equals_five, :f_equals_six
   end
   

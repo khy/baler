@@ -6,13 +6,13 @@ module Baler
         @expected_value = !!(expected_value)
       end
 
-      def passes?(instance)
+      def met?(instance)
         !!(return_value(instance)) == @expected_value
       end
       
       private
         def return_value(instance)
-          @object.is_a?(Proc) ? @object.call(instance) : instance.method(@object).call
+          @object.is_a?(Proc) ? instance.instance_eval(&@object) : instance.method(@object).call
         end
     end
   end
