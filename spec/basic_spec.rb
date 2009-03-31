@@ -52,6 +52,14 @@ describe 'basic Baler functionality' do
       @game.gather(0)
       @game.mvp.should == 'Dwight Howard'
     end
+    
+    it 'should gather only the specified attributes' do
+      @game.home_score = 12
+      @game.gather(0, :date, :home_team)
+      @game.date.should == 'Tuesday, February 3rd'
+      @game.home_team.should == 'Los Angeles Lakers'
+      @game.home_score.should == 12
+    end
   end
 end
     

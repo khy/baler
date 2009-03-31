@@ -48,10 +48,13 @@ module Baler
         gather_conditions << GatherCondition.new(object, expected_value)
       end
       
-      def gather(instance, index = nil, options = {})
+      def gather(instance, index = nil, *attributes)
+        options = attributes.extract_options
         if gather_conditions_pass?(instance) or options[:force]
           mappings.each do |mapping|
-            instance.__send__("#{mapping.attribute}=", mapping.value(index))
+            if attributes.empty? or attributes.include?(mapping.attribute)
+              instance.__send__("#{mapping.attribute}=", mapping.value(index))
+            end
           end
         end
         instance
