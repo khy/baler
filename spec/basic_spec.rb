@@ -5,7 +5,7 @@ class BasicGame
   
   attr_accessor :date, :home_team, :home_score, :mvp
     
-  set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
+  set_remote_source GAME_PATH do |source|
     source.uses :hpricot
     
     source.map :date => 'html > body > ol > li > span.date'

@@ -5,7 +5,7 @@ class BuildGame
 
   attr_accessor :league, :date, :home_team, :home_score, :mvp
 
-  set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
+  set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
     source.map :league => 'h1.global', :context => false

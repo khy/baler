@@ -5,7 +5,7 @@ class ContextGame
   
   attr_accessor :league, :date, :home_team, :home_score, :mvp, :referees
     
-  set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
+  set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
     source.map :league => 'h1.global', :context => false
@@ -21,7 +21,7 @@ class InvalidContextGame
   
   attr_accessor :date, :home_team
     
-  set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
+  set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li > jah'
     
     source.map :date => '> span.date'

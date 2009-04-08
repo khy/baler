@@ -5,7 +5,7 @@ class StandardBlockGame
   
   attr_accessor :away_team, :away_score, :referees, :away_wins, :away_losses
     
-  set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
+  set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
     source.map :away_team =>  'span.team.away' do |elements|

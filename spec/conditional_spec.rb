@@ -6,7 +6,7 @@ class ConditionalGame
   attr_accessor :home_team
   attr_accessor :a, :b, :c, :d, :e, :f
     
-  set_remote_source File.dirname(__FILE__) + '/samples/game.html' do |source|
+  set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
     source.map :home_team => 'html > body > ol > li > span.team.home'
