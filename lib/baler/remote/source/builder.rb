@@ -25,6 +25,10 @@ module Baler
         def set_context(path)
           @source.context.path = path
         end
+        
+        def set_lookup_attributes(*attributes)
+          @source.lookup_attributes = attributes
+        end
 
         def uses(parser_type)
           @source.parser.type = parser_type

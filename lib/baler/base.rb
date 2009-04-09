@@ -14,6 +14,10 @@ module Baler
       def build
         remote_source.build
       end
+      
+      def build_or_update
+        remote_source.build_or_update
+      end
     end
     
     module InstanceMethods

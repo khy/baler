@@ -1,4 +1,7 @@
-*edge*  [03/28/09] - added ability for mappings to forgo their source's context
+*0.3.0* [04/08/09] - implemented integration with ORM classes; Remote::Source#build_or_update
+                     retrieves persistent instances based upon #set_lookup_attributes, or builds
+                     a new instance when one is not found.
+        [03/28/09] - added ability for mappings to forgo their source's context
         [03/29/09] - implemented conditional gathering. The source can define the conditions
                      for when it should or should not gather remote info, using #gather_if and
                      #gather_unless
