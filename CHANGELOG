@@ -1,16 +1,16 @@
 *0.3.0* [04/08/09] - implemented integration with ORM classes; Remote::Source#build_or_update
                      retrieves persistent instances based upon #set_lookup_attributes, or builds
                      a new instance when one is not found.
-        [03/28/09] - added ability for mappings to forgo their source's context
+        [03/30/09] - added ability to specify a subset of attributes to be gathered.
         [03/29/09] - implemented conditional gathering. The source can define the conditions
                      for when it should or should not gather remote info, using #gather_if and
-                     #gather_unless
-        [03/30/09] - added ability to specify a subset of attributes to be gathered
+                     #gather_unless.
+        [03/28/09] - added ability for mappings to forgo their source's context.
 
-*0.2.0* [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths
+*0.2.0* [03/18/09] - implemented functionality for passing blocks to mappings. The array of specified
+                     elements are passed to the block before the value is assigned to the attribute.
         [03/10/09] - implemented class method #build that returns an array of instances, once for each
-                     context with the appropriate attribute values gathered
-        [03/18/09] - implemented functionality for passing blocks to mappings. The array of specified
-                     elements are passed to the block before the value is assigned to the attribute
-
-*0.1.0* [02/07/09] - Initial release
+                     context with the appropriate attribute values gathered.
+        [02/21/09] - implemented Remote::Source#context which allows #map to specify relative paths.
+        
+*0.1.0* [02/07/09] - Initial release.
