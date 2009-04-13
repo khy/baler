@@ -13,7 +13,8 @@ module Baler
 
         def relative_elements_for(path, index = nil)
           return absolute_elements_for(path, index) unless @context_path
-          context_element(index || 0).try.search(path) || Parser::Element::Array.new
+          context_element(index || 0).try.search(strip_context(path)) ||
+            Parser::Element::Array.new
         end
 
         def absolute_elements_for(path, index = nil)
@@ -29,6 +30,10 @@ module Baler
           
           def content
             @content ||= open(@url)
+          end
+
+          def strip_context(path)
+            path.sub(/^#{@context_path}/, '')
           end
       end
     end

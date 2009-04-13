@@ -7,13 +7,13 @@ module Baler
         end
 
         def map(options, &block)
-          context = options.delete(:context)
+          context = options.include?(:context) ? options.delete(:context) : true
           options.each do |attribute, path|
             @source.add_mapping(attribute, path, block, context)
           end
           @source
         end
-  
+
         def gather_if(*methods, &block)
           add_gather_conditions(methods, block, true)
         end

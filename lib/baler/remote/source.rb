@@ -5,8 +5,6 @@ module Baler
     class Source
       autoload :Builder, File.dirname(__FILE__) + '/source/builder'
       
-      extend Forwardable
-      
       attr_accessor :url, :gather_conditions, :lookup_attributes
       attr_reader :master
 
@@ -37,20 +35,17 @@ module Baler
       def document
         parser.document
       end
-      
-      def mappings
-        @mappings ||= @mapping_hash.values
-      end
 
       def mapped_attributes
         @mapped_attributes ||= @mapping_hash.keys
       end
 
       def add_mapping(attribute, path, block = nil, context = true)
-        new_mapping = Remote::Mapping.new(self, attribute, path)
-        new_mapping.block = block unless block.nil?
-        new_mapping.context = context unless context.nil?
-        @mapping_hash[attribute] = new_mapping
+        @mapping_hash[attribute] = build_extraction(path, block, context)
+      end
+
+      def build_extraction(path, block = nil, use_context = true)
+        Remote::Extraction.new(self.document, path, block, use_context)
       end
       
       def add_gather_condition(object, expected_value)
@@ -60,9 +55,9 @@ module Baler
       def gather(instance, index = nil, *attributes)
         options = attributes.extract_options
         if gather_conditions_met?(instance) or options[:force]
-          mappings.each do |mapping|
-            if attributes.empty? or attributes.include?(mapping.attribute)
-              instance.__send__("#{mapping.attribute}=", mapping.value(index))
+          @mapping_hash.each do |attribute, extraction|
+            if attributes.empty? or attributes.include?(attribute)
+              instance.__send__("#{attribute}=", extraction.value(index))
             end
           end
         end
@@ -85,9 +80,6 @@ module Baler
         end
       end
 
-      def_delegator(:document, :relative_elements_for, :relative_elements_for)
-      def_delegator(:document, :absolute_elements_for, :absolute_elements_for)
-      
       private
         def gather_conditions_met?(instance)
           gather_conditions.all?{|gather_condition| gather_condition.met?(instance)}
