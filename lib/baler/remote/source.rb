@@ -52,12 +52,13 @@ module Baler
         gather_conditions << GatherCondition.new(object, expected_value)
       end
       
-      def gather(instance, index = nil, *attributes)
+      def gather(instance, index = 0, *attributes)
         options = attributes.extract_options
         if gather_conditions_met?(instance) or options[:force]
           @mapping_hash.each do |attribute, extraction|
             if attributes.empty? or attributes.include?(attribute)
-              instance.__send__("#{attribute}=", extraction.value(index, options[:index_absolute_elements]))
+              value = extraction.value(index, options[:index_absolute_elements])
+              instance.__send__("#{attribute}=", value)
             end
           end
         end

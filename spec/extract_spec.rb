@@ -14,11 +14,11 @@ class ExtractGame
     season = source.extract 'h1.global', 1, :context => false
         
     source.map :a => 'span.date' do |result|
-      "#{result}...#{home_team1}"
+      home_team1
     end
     
     source.map :b => 'span.team.away' do |result|
-      home_team2
+      "#{result}...#{home_team2}"
     end
     
     source.map :c => 'span.score.away' do |result|
@@ -37,14 +37,14 @@ describe 'Baler extract functionality' do
   end
   
   describe 'extract' do
-    it 'should return the value from the first context, if one isn\'t specified' do
+    it 'should return the values across contexts, if one isn\'t specified' do
       @game.gather
-      @game.a.should == 'Tuesday, February 3rd...Los Angeles Lakers'
+      @game.a.should == ['Los Angeles Lakers', 'New York Knicks', 'Memphis Grizzlies']
     end
     
     it 'should return the value from the specified context' do
       @game.gather
-      @game.b.should == 'Memphis Grizzlies'
+      @game.b.should == 'Orlando Magic...Memphis Grizzlies'
     end
     
     it 'should ignore context when appropriate option is specified' do
@@ -59,10 +59,10 @@ describe 'Baler extract functionality' do
     end
     
     it 'should return a constant result, regardless of context' do
-      @game.gather
-      @game.a.should == 'Tuesday, February 3rd...Los Angeles Lakers'
-      @game.gather(2)
-      @game.a.should == 'Friday, February 6th...Los Angeles Lakers'
+      @game.gather 0
+      @game.b.should == 'Orlando Magic...Memphis Grizzlies'
+      @game.gather 2
+      @game.b.should == 'Boston Celtics...Memphis Grizzlies'
     end
   end
 end

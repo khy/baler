@@ -12,9 +12,14 @@ module Baler
         end
 
         def relative_elements_for(path, index = nil)
-          return absolute_elements_for(path, index) unless @context_path
-          context_element(index || 0).try.search(strip_context(path)) ||
-            Parser::Element::Array.new
+          if @context_path.nil?
+            absolute_elements_for(path, index)
+          elsif not index
+            absolute_elements_for(fully_qualify(path))
+          else
+            context_element(index).try.search(strip_context(path)) ||
+              Parser::Element::Array.new
+          end
         end
 
         def absolute_elements_for(path, index = nil)
@@ -34,6 +39,10 @@ module Baler
 
           def strip_context(path)
             path.sub(/^#{@context_path}/, '')
+          end
+          
+          def fully_qualify(path)
+            "#{context_path} #{strip_context(path)}"
           end
       end
     end
