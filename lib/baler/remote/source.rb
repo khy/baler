@@ -40,8 +40,8 @@ module Baler
         @mapped_attributes ||= @mapping_hash.keys
       end
 
-      def add_mapping(attribute, path, block = nil, context = true)
-        @mapping_hash[attribute] = build_extraction(path, block, context)
+      def add_mapping(attribute, path, block = nil, use_context = true)
+        @mapping_hash[attribute] = build_extraction(path, block, use_context)
       end
 
       def build_extraction(path, block = nil, use_context = true)
@@ -57,7 +57,7 @@ module Baler
         if gather_conditions_met?(instance) or options[:force]
           @mapping_hash.each do |attribute, extraction|
             if attributes.empty? or attributes.include?(attribute)
-              instance.__send__("#{attribute}=", extraction.value(index))
+              instance.__send__("#{attribute}=", extraction.value(index, options[:index_absolute_elements]))
             end
           end
         end
@@ -85,9 +85,9 @@ module Baler
           gather_conditions.all?{|gather_condition| gather_condition.met?(instance)}
         end
 
-        def existing_instance_for(context_index)
+        def existing_instance_for(index)
           if lookup_defined?
-            ORM.for(@master).find(build_lookup_hash(context_index))
+            ORM.for(@master).find(build_lookup_hash(index))
           end
         end
 

@@ -8,7 +8,7 @@ class BuildGame
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
-    source.map :league => 'h1.global', :context => false
+    source.map :league => 'h1.global.league', :context => false
     source.map :date => '> span.date'
     source.map :home_team => 'html > body > ol > li > span.team.home'
     source.map :home_score => '> span.score.home'

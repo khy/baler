@@ -3,12 +3,12 @@ require File.dirname(__FILE__) + '/spec_helper'
 class ContextGame
   include Baler
   
-  attr_accessor :league, :date, :home_team, :home_score, :mvp, :referees
+  attr_accessor :global, :date, :home_team, :home_score, :mvp, :referees
     
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
-    source.map :league => 'h1.global', :context => false
+    source.map :global => 'h1.global', :context => false
     source.map :date => '> span.date'
     source.map :home_team => 'html > body > ol > li > span.team.home'
     source.map :home_score => 'ol > span.score.home'
@@ -86,7 +86,13 @@ describe 'Baler context functionality' do
     
     it 'should forgo the context if directed to' do
       @game.gather
-      @game.league.should == 'National Basketball Association'
+      @game.global.should == ['National Basketball Association', '2008-09']
+    end
+    
+    it 'should use the supplied index for absolute elements when the appropriate 
+          option is specified' do
+      @game.gather 1, :index_absolute_elements => true
+      @game.global.should == '2008-09'
     end
   end
 end
