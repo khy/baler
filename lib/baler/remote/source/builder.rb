@@ -16,7 +16,7 @@ module Baler
         
         def extract(*args, &block)
           options = args.extract_options
-          context = options.include?(:context) ? options[:context] : true
+          context = options.include?(:context) ? options[:context] : false
           path, index = args
           @source.build_extraction(path, block, context).value(index, true)
         end

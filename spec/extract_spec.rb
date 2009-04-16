@@ -8,10 +8,10 @@ class ExtractGame
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
-    home_team1 = source.extract 'span.team.home'
-    home_team2 = source.extract 'span.team.home', 2
-    globals = source.extract 'h1.global', :context => false
-    season = source.extract 'h1.global', 1, :context => false
+    home_team1 = source.extract 'span.team.home', :context => true
+    home_team2 = source.extract 'span.team.home', 2, :context => true
+    globals = source.extract 'h1.global'
+    season = source.extract 'h1.global', 1
         
     source.map :a => 'span.date' do |result|
       home_team1
