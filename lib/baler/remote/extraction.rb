@@ -26,10 +26,19 @@ module Baler
       
       def value(index = nil, index_absolute_elements = false)
         elements = elements(index, index_absolute_elements)
-        result = self.block.call(elements) unless elements.empty?
-        (result.is_a?(Array) and result.length <= 1) ? result.first : result.try.to_array
+        value = self.block.call(elements) unless elements.empty?
+
+        if value.is_a? Parser::Element::Array
+          value = value.length <= 1 ? value.first : value.to_array
+        end
+        
+        if value.is_a? Parser::Element::Abstract
+          value = value.inner_html
+        end
+
+        value
       end
-      
+
       protected
         def elements(index = nil, index_absolute_elements = false)
           absolute_index = index if index_absolute_elements
