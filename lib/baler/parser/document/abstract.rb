@@ -17,8 +17,11 @@ module Baler
           elsif not index
             absolute_elements_for(fully_qualify(path))
           else
-            context_element(index).try.search(strip_context(path)) ||
+            if context = context_element(index)
+              context.search strip_context(path)
+            else
               Parser::Element::Array.new
+            end
           end
         end
 
