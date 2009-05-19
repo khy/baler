@@ -5,6 +5,16 @@ module Baler
         new_hash = self.clone
         new_hash.each{|key, value| new_hash[key] = other_hash[value]}
       end
+      
+      def extract_with_defaults!(defaults)
+        new_hash = {}
+        self.keys.each do |key|
+          if defaults.keys.include? key
+            new_hash[key] = self.delete key
+          end
+        end
+        defaults.merge new_hash
+      end
     end
     
     module Array
