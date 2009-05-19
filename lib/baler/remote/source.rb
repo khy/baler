@@ -43,7 +43,7 @@ module Baler
       end
 
       def build_extraction(path, block = nil, use_context = true)
-        Remote::Extraction.new(self.document, path, block, use_context)
+        Remote::Extraction.new(path, block, use_context)
       end
       
       def add_gather_condition(object, expected_value)
@@ -55,7 +55,7 @@ module Baler
         if gather_conditions_met?(instance) or options[:force]
           @mapping_hash.each do |attribute, extraction|
             if attributes.empty? or attributes.include?(attribute)
-              value = extraction.value(index, options[:index_absolute_elements])
+              value = extraction.value(document, index, options[:index_absolute_elements])
               instance.__send__("#{attribute}=", value)
             end
           end
@@ -97,7 +97,7 @@ module Baler
         def build_lookup_hash(index)
           lookup_hash = {}
           @lookup_attributes.each do |attribute|
-            lookup_hash[attribute.to_sym] = @mapping_hash[attribute].value(index)
+            lookup_hash[attribute.to_sym] = @mapping_hash[attribute].value(document, index)
           end
           lookup_hash
         end
