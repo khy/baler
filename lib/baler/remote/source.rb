@@ -6,9 +6,10 @@ module Baler
       attr_accessor :url, :gather_conditions, :lookup_attributes
       attr_reader :master
 
-      def initialize(master, url)
+      def initialize(master, raw_url_string)
         @master = master
-        @url = url
+        @url = URL.new(raw_url_string)
+        @documents = {}
         @mapping_hash = {}
         @gather_conditions = []
         @lookup_attributes = []
@@ -30,8 +31,9 @@ module Baler
         @builder ||= Builder.new(self)
       end
 
-      def document
-        parser.document
+      def document(mapping = {})
+        url = @url.resolve(mapping)
+        @documents[url] = parser.document(url)
       end
 
       def mapped_attributes
