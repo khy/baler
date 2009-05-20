@@ -44,10 +44,6 @@ module Baler
         @mapping_hash[attribute] = build_extraction(path, block, use_context)
       end
 
-      def build_extraction(path, block = nil, use_context = true)
-        Remote::Extraction.new(path, block, use_context)
-      end
-      
       def add_gather_condition(object, expected_value)
         gather_conditions << GatherCondition.new(object, expected_value)
       end
@@ -82,6 +78,10 @@ module Baler
       end
 
       private
+        def build_extraction(path, block = nil, use_context = true)
+          Remote::Extraction.new(path, block, use_context)
+        end
+      
         def gather_conditions_met?(instance)
           gather_conditions.all?{|gather_condition| gather_condition.met?(instance)}
         end

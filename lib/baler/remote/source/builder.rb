@@ -13,14 +13,7 @@ module Baler
           end
           @source
         end
-        
-        def extract(*args, &block)
-          options = args.extract_options
-          context = options.include?(:context) ? options[:context] : false
-          path, index = args
-          @source.build_extraction(path, block, context).value(@source.document, index, true)
-        end
-        
+
         def gather_if(*methods, &block)
           add_gather_conditions(methods, block, true)
         end
