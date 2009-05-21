@@ -11,6 +11,7 @@ module Baler
         @url = URL.new(raw_url_string)
         @documents = {}
         @mapping_hash = {}
+        @mapping_order = []
         @gather_conditions = []
         @lookup_attributes = []
       end
@@ -37,10 +38,11 @@ module Baler
       end
 
       def mapped_attributes
-        @mapped_attributes ||= @mapping_hash.keys
+        @mapping_order
       end
 
       def add_mapping(attribute, path, block = nil, use_context = true)
+        @mapping_order << attribute
         @mapping_hash[attribute] = build_extraction(path, block, use_context)
       end
 
@@ -51,8 +53,9 @@ module Baler
       def gather(instance, index = 0, *attributes)
         options = attributes.extract_options
         if gather_conditions_met?(instance) or options[:force]
-          @mapping_hash.each do |attribute, extraction|
+          @mapping_order.each do |attribute|
             if attributes.empty? or attributes.include?(attribute)
+              extraction = @mapping_hash[attribute]
               value = extraction.value(document, index, options[:index_absolute_elements])
               instance.__send__("#{attribute}=", value)
             end
