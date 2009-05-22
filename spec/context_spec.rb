@@ -88,11 +88,5 @@ describe 'Baler context functionality' do
       @game.gather
       @game.global.should == ['National Basketball Association', '2008-09']
     end
-    
-    it 'should use the supplied index for absolute elements when the appropriate 
-          option is specified' do
-      @game.gather 1, :index_absolute_elements => true
-      @game.global.should == '2008-09'
-    end
   end
 end

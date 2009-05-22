@@ -56,7 +56,7 @@ module Baler
           @mapping_order.each do |attribute|
             if attributes.empty? or attributes.include?(attribute)
               extraction = @mapping_hash[attribute]
-              value = extraction.value(document, instance, index, options[:index_absolute_elements])
+              value = extraction.value(document, instance, index)
               instance.__send__("#{attribute}=", value)
             end
           end

@@ -18,8 +18,8 @@ module Baler
 
       alias use_context? use_context
       
-      def value(document, instance, index = nil, index_absolute_elements = false)
-        elements = elements(document, index, index_absolute_elements)
+      def value(document, instance, index = nil)
+        elements = elements(document, index)
         value = block_value(elements, instance)
 
         if value.is_a? Parser::Element::Array
@@ -44,11 +44,10 @@ module Baler
           end
         end
 
-        def elements(document, index = nil, index_absolute_elements = false)
-          absolute_index = index if index_absolute_elements
+        def elements(document, index = nil)
           use_context? ?
             document.relative_elements_for(@path, index) :
-            document.absolute_elements_for(@path, absolute_index)
+            document.absolute_elements_for(@path)
         end
     end
   end
