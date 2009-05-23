@@ -47,7 +47,7 @@ describe 'Baler context functionality' do
     end
     
     it 'should assign attributes data relative to the context specified by the index' do
-      @game.gather(2)
+      @game.gather :index => 2
       @game.date.should == 'Friday, February 6th'
       @game.home_team.should == 'Memphis Grizzlies'
     end
@@ -65,7 +65,7 @@ describe 'Baler context functionality' do
     
     it 'should assign nil to attributes that don\'t exist in the specified context' do
       @game.referees = 'stub'
-      @game.gather(1)
+      @game.gather :index => 1
       @game.referees.should be_nil
     end
     

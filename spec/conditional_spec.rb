@@ -44,36 +44,36 @@ describe 'Baler conditional gather functionality' do
   describe '#gather' do
     it 'should gather as expected when all \'if\' conditions are true 
           and all \'unless\' conditions are false' do
-      @game.gather(0)
+      @game.gather :index => 0
       @game.home_team.should == 'Los Angeles Lakers'
     end
     
     it 'should not gather if any \'if\' condition is false' do
       @game.a = 2
-      @game.gather(0)
+      @game.gather :index => 0
       @game.home_team.should == 'Houston Rockets'
       @game.a == 1
       
       @game.b = 1
-      @game.gather(0)
+      @game.gather :index => 0
       @game.home_team.should == 'Houston Rockets'
     end
     
     it 'should not gather if any \'unless\' condition is true' do
       @game.d = 4
-      @game.gather(0)
+      @game.gather :index => 0
       @game.home_team.should == 'Houston Rockets'
       @game.d == nil
       
       @game.f = 6
-      @game.gather(0)
+      @game.gather :index => 0
       @game.home_team.should == 'Houston Rockets'
     end
     
     it 'should ignore \'if\' and \'unless\' conditions if forced' do
       @game.c = 1
       @game.e = 5
-      @game.gather(0, :force => true)
+      @game.gather :index => 0, :force => true
       @game.home_team.should == 'Los Angeles Lakers'
     end
   end

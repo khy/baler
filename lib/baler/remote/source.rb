@@ -50,13 +50,20 @@ module Baler
         gather_conditions << GatherCondition.new(object, expected_value)
       end
       
-      def gather(instance, index = 0, *attributes)
-        options = attributes.extract_options
+      DEFAULT_GATHER_OPTIONS = {
+        :index => 0,
+        :url_mapping => {},
+        :attributes => [],
+        :force => false
+      }
+      
+      def gather(instance, options = {})
+        options = options.extract_with_defaults!(DEFAULT_GATHER_OPTIONS)
         if gather_conditions_met?(instance) or options[:force]
           @mapping_order.each do |attribute|
-            if attributes.empty? or attributes.include?(attribute)
+            if options[:attributes].empty? or options[:attributes].include?(attribute)
               extraction = @mapping_hash[attribute]
-              value = extraction.value(document, instance, index)
+              value = extraction.value document(options[:url_mapping]), instance, options[:index]
               instance.__send__("#{attribute}=", value)
             end
           end
@@ -73,7 +80,7 @@ module Baler
       def build_or_update
         Array.new(context.size) do |context_index|
           if existing_instance = existing_instance_for(context_index)
-            existing_instance.gather context_index, *non_lookup_attributes
+            existing_instance.gather :index => context_index, :attributes => non_lookup_attributes
           else
             build_instance(context_index)
           end
@@ -108,7 +115,7 @@ module Baler
         end
         
         def build_instance(index)
-          @master.new.gather index, :force => true
+          @master.new.gather :index => index, :force => true
         end
         
         def non_lookup_attributes

@@ -27,36 +27,36 @@ describe 'basic Baler functionality' do
     end
     
     it 'should assign all the data mapped to the attributes, if index is explicitly false' do
-      @game.gather false
+      @game.gather :index => false
       @game.date.should == ["Tuesday, February 3rd", "Wednesday, February 4th", "Friday, February 6th"]
       @game.home_team.should == ["Los Angeles Lakers", "New York Knicks", "Memphis Grizzlies"]
     end
     
     it 'should assign the data (specified by index) mapped to the attributes' do
-      @game.gather(0)
+      @game.gather :index => 0
       @game.date.should == 'Tuesday, February 3rd'
       @game.home_team.should == 'Los Angeles Lakers'
       
-      @game.gather(1)
+      @game.gather :index => 1
       @game.date.should == 'Wednesday, February 4th'
       @game.home_team.should == 'New York Knicks'
     end
     
     it 'should assign nil to attributes mapped to nonexistant data' do
       @game.home_score = 112
-      @game.gather(0)
+      @game.gather :index => 0
       @game.home_score.should be_nil
     end
     
     it 'shouldn\'t have any affect on unmapped attributes' do
       @game.mvp = 'Dwight Howard'
-      @game.gather(0)
+      @game.gather :index => 0
       @game.mvp.should == 'Dwight Howard'
     end
     
     it 'should gather only the specified attributes' do
       @game.home_score = 12
-      @game.gather(0, :date, :home_team)
+      @game.gather :index => 0, :attributes => [:date, :home_team]
       @game.date.should == 'Tuesday, February 3rd'
       @game.home_team.should == 'Los Angeles Lakers'
       @game.home_score.should == 12

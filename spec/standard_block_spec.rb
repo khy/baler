@@ -48,7 +48,7 @@ describe 'Baler block  functionality' do
     end
     
     it 'should provide targeted elements based upon the supplied index' do
-      @game.gather(1)
+      @game.gather :index => 1
       @game.away_team.should == "Pistons"
       @game.referees.should be_nil
     end

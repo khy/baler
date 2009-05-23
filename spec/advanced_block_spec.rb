@@ -23,7 +23,7 @@ describe 'Baler advanced block functionality' do
   
   describe '#gather' do
     it 'should provide the instance to the map block if specified' do
-      @game.gather(0).date.should == "Tuesday, February 3rd 2008-09"
+      @game.gather(:index => 0).date.should == "Tuesday, February 3rd 2008-09"
     end
   end
 end
