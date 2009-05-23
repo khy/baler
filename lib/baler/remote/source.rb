@@ -71,18 +71,31 @@ module Baler
         instance
       end
         
-      def build
-        Array.new(context.size) do |context_index| 
-          build_instance(context_index)
+      DEFAULT_BUILD_OPTIONS = {
+        :url_mapping => {}
+      }
+        
+      def build(options = {})
+        options = options.extract_with_defaults!(DEFAULT_BUILD_OPTIONS)
+        Array.new(context.size) do |context_index|
+          build_instance options.reverse_merge(:index => context_index)
         end
       end
       
-      def build_or_update
+      DEFAULT_BUILD_OR_UPDATE_OPTIONS = {
+        :url_mapping => {}
+      }
+      
+      def build_or_update(options = {})
+        options = options.extract_with_defaults!(DEFAULT_BUILD_OR_UPDATE_OPTIONS)
+        
         Array.new(context.size) do |context_index|
+          gather_options = options.reverse_merge(:index => context_index)
+          
           if existing_instance = existing_instance_for(context_index)
-            existing_instance.gather :index => context_index, :attributes => non_lookup_attributes
+            existing_instance.gather gather_options.reverse_merge(:attributes => non_lookup_attributes)
           else
-            build_instance(context_index)
+            build_instance gather_options
           end
         end
       end
@@ -114,8 +127,8 @@ module Baler
           lookup_hash
         end
         
-        def build_instance(index)
-          @master.new.gather :index => index, :force => true
+        def build_instance(options = {})
+          @master.new.gather options.reverse_merge(:force => true)
         end
         
         def non_lookup_attributes

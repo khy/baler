@@ -11,11 +11,11 @@ module Baler
         instance_variable_get(:@remote_source)
       end
       
-      def build
+      def build(options = {})
         remote_source.build
       end
       
-      def build_or_update
+      def build_or_update(options = {})
         remote_source.build_or_update
       end
     end

@@ -15,6 +15,10 @@ module Baler
         end
         defaults.merge new_hash
       end
+      
+      def reverse_merge(other_hash)
+        other_hash.merge(self)
+      end
     end
     
     module Array
