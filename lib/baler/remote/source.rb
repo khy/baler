@@ -9,7 +9,6 @@ module Baler
       def initialize(master, raw_url_string)
         @master = master
         @url = URL.new(raw_url_string)
-        @documents = {}
         @extractions = []
         @gather_conditions = []
         @lookup_attributes = []
@@ -32,8 +31,7 @@ module Baler
       end
 
       def document(mapping = {})
-        url = @url.resolve(mapping)
-        @documents[url] = parser.document(url)
+        parser.document @url.resolve(mapping)
       end
 
       def mapped_attributes

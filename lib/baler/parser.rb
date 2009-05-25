@@ -8,6 +8,7 @@ module Baler
     
     def initialize(source)
       @source = source
+      @documents = {}
     end
 
     def type
@@ -23,7 +24,7 @@ module Baler
     end
 
     def document(url)
-      @document ||= Document.for(type, url, @source.context.path)
+      @documents[url] ||= Document.for(type, url, @source.context.path)
     end
     
     module Search
