@@ -1,4 +1,8 @@
-*edge*  [04/13/09] - added functionality for extracting a value from the source, without
+*edge*  [05/25/09] - added functionality for gather-time source resolution, i.e. the ability
+                     alter the source's url for any single gather, using the :url_mapping option
+        [05/19/09] - decided against previous extraction functionality as it up-front remote
+                     fetching, and would needlessly complicate more important features.
+        [04/13/09] - added functionality for extracting a value from the source, without
                      actually mapping it to a instance attribute
 
 *0.3.0* [04/08/09] - implemented integration with ORM classes; Remote::Source#build_or_update
