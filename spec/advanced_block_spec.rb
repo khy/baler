@@ -8,7 +8,7 @@ class AdvancedBlockGame
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
-    source.map :year => 'h1.global.season', :context => false
+    source.map :year => 'h1.global.season', :use_context => false
     
     source.map  :date => 'span.date' do |result, game|
       result.first.inner_html + ' ' + game.year

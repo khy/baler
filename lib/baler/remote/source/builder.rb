@@ -6,11 +6,22 @@ module Baler
           @source = source
         end
 
-        def map(options, &block)
-          context = options.include?(:context) ? options.delete(:context) : true
-          options.each do |attribute, path|
-            @source.add_extraction(path, attribute, block, context)
+        DEFAULT_MAP_OPTIONS = {
+          :use_context => true
+        }
+
+        def map(*args, &block)
+          mappings = args.extract_options
+          options = mappings.extract_with_defaults!(DEFAULT_MAP_OPTIONS)
+
+          args.each do |anonymous_path|
+            @source.add_extraction(anonymous_path, nil, options[:use_context], &block)
           end
+
+          mappings.each do |attribute, path|
+            @source.add_extraction(path, attribute, options[:use_context], &block)
+          end
+
           @source
         end
 

@@ -40,12 +40,12 @@ module Baler
         @extractions.map{|extraction| extraction.attribute}
       end
 
-      def add_extraction(path, attribute, block = nil, use_context = true)
-        @extractions << build_extraction(path, attribute, block, use_context)
+      def add_extraction(path, attribute, use_context = true, &block)
+        @extractions << Extraction.new(path, attribute, block, use_context)
       end
 
       def add_gather_condition(object, expected_value)
-        gather_conditions << GatherCondition.new(object, expected_value)
+        @gather_conditions << GatherCondition.new(object, expected_value)
       end
       
       DEFAULT_GATHER_OPTIONS = {
@@ -101,10 +101,6 @@ module Baler
       end
 
       private
-        def build_extraction(path, attribute = nil, block = nil, use_context = true)
-          Remote::Extraction.new(path, attribute, block, use_context)
-        end
-      
         def gather_conditions_met?(instance)
           gather_conditions.all?{|gather_condition| gather_condition.met?(instance)}
         end

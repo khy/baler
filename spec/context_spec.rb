@@ -8,7 +8,7 @@ class ContextGame
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
-    source.map :global => 'h1.global', :context => false
+    source.map :global => 'h1.global', :use_context => false
     source.map :date => '> span.date'
     source.map :home_team => 'html > body > ol > li > span.team.home'
     source.map :home_score => 'ol > span.score.home'
