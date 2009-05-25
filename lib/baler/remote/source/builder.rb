@@ -9,7 +9,7 @@ module Baler
         def map(options, &block)
           context = options.include?(:context) ? options.delete(:context) : true
           options.each do |attribute, path|
-            @source.add_mapping(attribute, path, block, context)
+            @source.add_extraction(path, attribute, block, context)
           end
           @source
         end

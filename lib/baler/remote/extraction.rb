@@ -1,13 +1,14 @@
 module Baler
   module Remote
     class Extraction
-      attr_accessor :document, :use_context, :block
+      attr_accessor :attribute, :use_context, :block
       attr_reader :path
       
       DEFAULT_BLOCK = Proc.new{|elements| elements.inner_html}
 
-      def initialize(path, block = nil, use_context = true)
+      def initialize(path, attribute = nil, block = nil, use_context = true)
         self.path = path
+        @attribute = attribute
         @block = block || DEFAULT_BLOCK
         @use_context = use_context
       end

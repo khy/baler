@@ -10,8 +10,7 @@ module Baler
         @master = master
         @url = URL.new(raw_url_string)
         @documents = {}
-        @mapping_hash = {}
-        @mapping_order = []
+        @extractions = []
         @gather_conditions = []
         @lookup_attributes = []
       end
@@ -38,12 +37,11 @@ module Baler
       end
 
       def mapped_attributes
-        @mapping_order
+        @extractions.map{|extraction| extraction.attribute}
       end
 
-      def add_mapping(attribute, path, block = nil, use_context = true)
-        @mapping_order << attribute
-        @mapping_hash[attribute] = build_extraction(path, block, use_context)
+      def add_extraction(path, attribute, block = nil, use_context = true)
+        @extractions << build_extraction(path, attribute, block, use_context)
       end
 
       def add_gather_condition(object, expected_value)
@@ -60,11 +58,13 @@ module Baler
       def gather(instance, options = {})
         options = options.extract_with_defaults!(DEFAULT_GATHER_OPTIONS)
         if gather_conditions_met?(instance) or options[:force]
-          @mapping_order.each do |attribute|
-            if options[:attributes].empty? or options[:attributes].include?(attribute)
-              extraction = @mapping_hash[attribute]
+          @extractions.each do |extraction|
+            if options[:attributes].empty? or options[:attributes].include?(extraction.attribute)
               value = extraction.value document(options[:url_mapping]), instance, options[:index]
-              instance.__send__("#{attribute}=", value)
+              
+              if extraction.attribute
+                instance.__send__("#{extraction.attribute}=", value)
+              end
             end
           end
         end
@@ -101,8 +101,8 @@ module Baler
       end
 
       private
-        def build_extraction(path, block = nil, use_context = true)
-          Remote::Extraction.new(path, block, use_context)
+        def build_extraction(path, attribute = nil, block = nil, use_context = true)
+          Remote::Extraction.new(path, attribute, block, use_context)
         end
       
         def gather_conditions_met?(instance)
@@ -122,7 +122,7 @@ module Baler
         def build_lookup_hash(index)
           lookup_hash = {}
           @lookup_attributes.each do |attribute|
-            lookup_hash[attribute.to_sym] = @mapping_hash[attribute].value(document, index)
+            lookup_hash[attribute.to_sym] = extraction_for(attribute).value(document, index)
           end
           lookup_hash
         end
@@ -133,6 +133,10 @@ module Baler
         
         def non_lookup_attributes
           mapped_attributes - @lookup_attributes
+        end
+        
+        def extraction_for(attribute)
+          @extractions.select{|extraction| extraction.attribute == attribute}.last
         end
     end
   end
