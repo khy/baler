@@ -12,11 +12,11 @@ module Baler
       end
       
       def build(options = {})
-        remote_source.build
+        remote_source.build(options)
       end
       
       def build_or_update(options = {})
-        remote_source.build_or_update
+        remote_source.build_or_update(options)
       end
     end
     
