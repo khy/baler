@@ -34,7 +34,7 @@ module Baler
         end
   
         def set_context(path)
-          @source.context.path = path
+          @source.context_path = path
         end
         
         def set_lookup_attributes(*attributes)

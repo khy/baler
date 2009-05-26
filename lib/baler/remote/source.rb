@@ -3,7 +3,7 @@ module Baler
     class Source
       autoload :Builder, File.dirname(__FILE__) + '/source/builder'
       
-      attr_accessor :url, :gather_conditions, :lookup_attributes
+      attr_accessor :url, :context_path, :gather_conditions, :lookup_attributes
       attr_reader :master
 
       def initialize(master, raw_url_string)
@@ -12,10 +12,6 @@ module Baler
         @extractions = []
         @gather_conditions = []
         @lookup_attributes = []
-      end
-
-      def context
-        @context ||= Context.new(self)
       end
       
       def parser
@@ -75,7 +71,7 @@ module Baler
         
       def build(options = {})
         options = options.extract_with_defaults!(DEFAULT_BUILD_OPTIONS)
-        Array.new(context.size) do |context_index|
+        Array.new(document(options[:url_mapping]).context_size) do |context_index|
           build_instance options.reverse_merge(:index => context_index)
         end
       end
@@ -87,7 +83,7 @@ module Baler
       def build_or_update(options = {})
         options = options.extract_with_defaults!(DEFAULT_BUILD_OR_UPDATE_OPTIONS)
         
-        Array.new(context.size) do |context_index|
+        Array.new(document(options[:url_mapping]).context_size) do |context_index|
           gather_options = options.reverse_merge(:index => context_index)
           
           if existing_instance = existing_instance_for(context_index)

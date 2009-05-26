@@ -24,7 +24,7 @@ module Baler
     end
 
     def document(url)
-      @documents[url] ||= Document.for(type, url, @source.context.path)
+      @documents[url] ||= Document.for(type, url, @source.context_path)
     end
     
     module Search

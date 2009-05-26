@@ -30,7 +30,11 @@ module Baler
         end
       
         def context_element(index)
-          search(@context_path, index).first
+          absolute_elements_for(@context_path, index).first
+        end
+
+        def context_size
+          absolute_elements_for(@context_path).size
         end
 
         protected
