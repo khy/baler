@@ -17,11 +17,7 @@ module Baler
       def parser
         @parser ||= Parser.new(self)
       end
-      
-      def config
-        @config ||= Configuration.new(self)
-      end
-      
+
       def builder
         @builder ||= Builder.new(self)
       end
