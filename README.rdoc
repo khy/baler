@@ -1,24 +1,57 @@
 = Baler
 
-Baler is a simple Ruby library that allows you to turn messy data into neat Ruby classes. An example should sum it up:
+Baler is a data normalization framework that allows a class to populate itself with data in any form, from any source in a simple, repeatable fashion.
+
+Assume the following data source for all examples:
+
+  <html>
+    ...
+    <body>
+      <h1 id="league">National Basketball Association</h1>
+      <h2 class="date">Wednesday, May 27th, 2009</h2>
+      
+      <ul id="schedule">
+        <li>
+          <h3 class="team visiting">Orlando Magic</h3>
+          <h3 class="team home">Cleveland Cavaliers</h3>
+          <p class="start_time">8:05 EST</p>
+        </li>
+        
+        <li>
+          <h3 class="team visiting">Denver Nuggets</h3>
+          <h3 class="team home">LA Lakers</h3>
+          <p class="start_time">10:05 EST</p>
+        </l1>
+      </ul>
+    </body>
+  </html>
+
+Set up your class like this:
 
   class Game
     include Baler
+  
+    attr_accessor :home_team, :visiting_team, :date, :start_time
     
-    attr_accessor :date, :home_team, :away_team
-    
-    set_remote_source 'team.com/schedule' do |source|
-      source.map :date => 'html > body > ol > li > span.date'
-      source.map :home_team => 'html > body > ol > li > div.teams > span.home'
-      source.map :away_team => 'html > body > ol > li > div.teams > span.away'
+    set_remote_source '[source URL]' do |source|
+      source.set_context 'ul.schedule > li'
+      
+      source.map :home_team => 'h3.home'
+      source.map :visiting_team => 'h3.visiting'
+      source.map :start_time => 'p.start_time'
+      source.map :date => 'body > h2.date', :use_context => false
     end
   end
   
-  game = Game.new
-  game.date         #=> nil
-  game.home_team    #=> nil
-  game.away_team    #=> nil
-  game.gather
-  game.date         #=> '12/16/2009'
-  game.home_team    #=> 'Panthers'
-  game.away_team    #=> 'Tigers'
+Within the <tt>set_remote_source</tt> block, the <tt>set_context</tt> method defines what element in the source maps to a game. In the above example, there are two games listed in the schedule, each contained by a list item within the unordered list, so the appropriate CSS selector is passed to <tt>set_context</tt>.
+
+Each <tt>map</tt> method maps a particular element in the source to an attribute of the class. The selector is taken relative to the context, by default, but does not have to be (as with the data attribute in the example).
+
+So, lets see how it works.
+
+  >> Game.build
+  => [#<Game:0x8ce9c @home_team="Cleveland Cavaliers", @away_team="Orlando Magic", @date="Wednesday, May 27th, 2009", @start_time="8:05 EST">, #<Game:0x644ec @home_team="LA Lakers", ...]
+  >> Game.new.gather :index => 1
+  => #<Game:0x626d8 @home_team="LA Lakers", @away_team="Denver Nuggets", @date="Wednesday, May 27th, 2009", @start_time="10:05 EST">
+
+And that's just the beginning. Check out RDoc documentation for the different tools that Baler provides for organizing the way you gather remote data.
