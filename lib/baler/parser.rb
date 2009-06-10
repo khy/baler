@@ -17,7 +17,7 @@ module Baler
 
     def type=(type)
       unless TYPES.include?(type)
-        raise Baler::Parser::InvalidTypeError
+        raise Baler::Parser::InvalidType
       end
       
       @type = type

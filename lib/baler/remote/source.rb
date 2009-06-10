@@ -3,11 +3,12 @@ module Baler
     class Source
       autoload :Builder, File.dirname(__FILE__) + '/source/builder'
       
-      attr_accessor :url, :context_path, :gather_conditions, :lookup_attributes
+      attr_accessor :name, :url, :context_path, :gather_conditions, :lookup_attributes
       attr_reader :master
 
-      def initialize(master, raw_url_string)
+      def initialize(master, name, raw_url_string)
         @master = master
+        @name = name
         @url = URL.new(raw_url_string)
         @extractions = []
         @gather_conditions = []
