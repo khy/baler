@@ -16,7 +16,7 @@ module Baler
       end
       
       def parser
-        @parser ||= Parser.new(self)
+        @parser ||= Parser.new
       end
 
       def builder
@@ -24,7 +24,7 @@ module Baler
       end
 
       def document(mapping = {})
-        parser.document @url.resolve(mapping)
+        parser.document @url.resolve(mapping), context_path
       end
 
       def mapped_attributes

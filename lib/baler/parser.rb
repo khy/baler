@@ -5,11 +5,6 @@ module Baler
     
     TYPES = [:hpricot]
     DEFAULT_TYPE = Parser::TYPES.first
-    
-    def initialize(source)
-      @source = source
-      @documents = {}
-    end
 
     def type
       @type || DEFAULT_TYPE
@@ -23,8 +18,12 @@ module Baler
       @type = type
     end
 
-    def document(url)
-      @documents[url] ||= Document.for(type, url, @source.context_path)
+    def documents
+      @documents ||= {}
+    end
+
+    def document(url, context_path)
+      self.documents[url] ||= Document.for(type, url, context_path)
     end
     
     module Search
