@@ -18,12 +18,8 @@ module Baler
       @type = type
     end
 
-    def documents
-      @documents ||= {}
-    end
-
     def document(url, context_path)
-      self.documents[url] ||= Document.for(type, url, context_path)
+      Document.for(type, url, context_path)
     end
     
     module Search
