@@ -1,5 +1,5 @@
 module Baler
-  class Parser
+  module Parser
     module Element
       class Abstract
         def initialize(raw_element)

@@ -1,7 +1,7 @@
 require 'hpricot'
 
 module Baler
-  class Parser
+  module Parser
     module Document
       class Hpricot < Abstract
         protected

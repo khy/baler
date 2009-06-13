@@ -1,5 +1,5 @@
 module Baler
-  class Parser
+  module Parser
     autoload :Document, File.dirname(__FILE__) + '/parser/document'
     autoload :Element, File.dirname(__FILE__) + '/parser/element'
     

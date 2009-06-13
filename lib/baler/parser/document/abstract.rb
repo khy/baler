@@ -1,7 +1,7 @@
 require 'open-uri'
 
 module Baler
-  class Parser
+  module Parser
     module Document
       class Abstract
         attr_accessor :url, :context_path

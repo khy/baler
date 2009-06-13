@@ -4,7 +4,7 @@ module Baler
   class NoSourcesDefined < Error; end
   class SourceNotDefinedForName < Error; end
   
-  class Parser
+  module Parser
     class Error < Baler::Error; end
     class InvalidType < Error; end
   end

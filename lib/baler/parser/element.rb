@@ -1,5 +1,5 @@
 module Baler
-  class Parser
+  module Parser
     module Element
       autoload :Abstract, File.dirname(__FILE__) + '/element/abstract'
       autoload :Hpricot, File.dirname(__FILE__) + '/element/hpricot'
