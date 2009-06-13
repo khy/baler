@@ -8,7 +8,13 @@ module Baler
       CLASS_TYPE_MAP = {::Hpricot::Elem => :hpricot}
       
       def self.for(element)
-        CLASS_TYPE_MAP.compose(TYPE_MAP)[element.class].new(element)
+        klass = class_for(element)
+        klass.new(element)
+      end
+      
+      def self.class_for(element)
+        type = CLASS_TYPE_MAP[element.class]
+        TYPE_MAP[type]
       end
       
       class Array < ::Array
