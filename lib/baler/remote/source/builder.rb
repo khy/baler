@@ -80,7 +80,7 @@ module Baler
 
         # Defines which parser Baler will use
         def uses(parser_type)
-          @source.parser.type = parser_type
+          @source.parser_type = parser_type
         end
         alias set_parser uses
         

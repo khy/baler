@@ -6,22 +6,6 @@ module Baler
     TYPES = [:hpricot]
     DEFAULT_TYPE = Parser::TYPES.first
 
-    def type
-      @type || DEFAULT_TYPE
-    end
-
-    def type=(type)
-      unless TYPES.include?(type)
-        raise Baler::Parser::InvalidType
-      end
-      
-      @type = type
-    end
-
-    def document(url, context_path)
-      Document.for(type, url, context_path)
-    end
-    
     module Search
       def search(path, index = nil)
         Search.normalize(raw_search(path), index)
