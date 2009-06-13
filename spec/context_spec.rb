@@ -10,7 +10,7 @@ class ContextGame
     
     source.map :global => 'h1.global', :use_context => false
     source.map :date => '> span.date'
-    source.map :home_team => 'html > body > ol > li > span.team.home'
+    source.map :home_team => 'span.team.home'
     source.map :home_score => 'ol > span.score.home'
     source.map :referees => '> ul.referees > li'
   end

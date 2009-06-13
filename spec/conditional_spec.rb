@@ -9,7 +9,7 @@ class ConditionalGame
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
     
-    source.map :home_team => 'html > body > ol > li > span.team.home'
+    source.map :home_team => 'span.team.home'
     
     source.gather_if {a == 1}
     source.gather_if :b_equals_two, :c_equals_three

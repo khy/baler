@@ -10,7 +10,7 @@ class BuildGame
     
     source.map :league => 'h1.global.league', :use_context => false
     source.map :date => '> span.date'
-    source.map :home_team => 'html > body > ol > li > span.team.home'
+    source.map :home_team => 'span.team.home'
     source.map :home_score => '> span.score.home'
   end
 end

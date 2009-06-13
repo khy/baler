@@ -15,10 +15,10 @@ module Baler
           if @context_path.nil?
             absolute_elements_for(path, index)
           elsif not index
-            absolute_elements_for(fully_qualify(path))
+            absolute_elements_for absolute_path(path)
           else
             if context = context_element(index)
-              context.search strip_context(path)
+              context.search path
             else
               Parser::Element::Array.new
             end
@@ -44,12 +44,8 @@ module Baler
             @content ||= open(@url)
           end
 
-          def strip_context(path)
-            path.sub(/^#{@context_path}/, '')
-          end
-          
-          def fully_qualify(path)
-            "#{context_path} #{strip_context(path)}"
+          def absolute_path(relative_path)
+            "#{context_path} #{relative_path}"
           end
       end
     end
