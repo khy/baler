@@ -86,10 +86,9 @@ module Baler
         
         private
           def add_gather_conditions(methods, block, expected_value)
-            methods.each do |method|
+            (methods << block).compact.each do |method|
               @source.add_gather_condition(method, expected_value)
             end
-            @source.add_gather_condition(block, expected_value) if block
           end
       end
     end
