@@ -7,7 +7,7 @@ module Baler
       TYPE_MAP = {:hpricot => Hpricot}
       CLASS_TYPE_MAP = {::Hpricot::Elem => :hpricot}
       
-      def self.for(element)
+      def self.wrap(element)
         klass = class_for(element)
         klass.new(element)
       end

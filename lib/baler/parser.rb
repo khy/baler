@@ -12,7 +12,7 @@ module Baler
       end
         
       def self.normalize(raw_array, index = nil)
-        raw_array.map!{|element| Element.for(element)}
+        raw_array.map!{|raw_element| Element.wrap(raw_element)}
         Element::Array.new(index ? ([raw_array[index]].compact) : raw_array)
       end
     end
