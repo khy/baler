@@ -29,24 +29,23 @@ class InvalidContextGame
   end  
 end
 
-describe 'Baler context functionality' do
+describe 'A class that mixes-in Baler' do
   before(:each) do
     @game = ContextGame.new
   end
   
-  describe '#gather' do
-    it 'should assign attributes data relative to the first defined context,
-        if no index is specified' do
+  context 'upon #gather' do
+    it 'should assign values relative to the specified context' do
       @game.gather
       @game.date.should == 'Tuesday, February 3rd'
     end
     
-    it 'should assign attributes even if an absolute path is given with a context' do
+    it 'should assign values absolutely if the selector begins with the specified context' do
       @game.gather
       @game.home_team.should == 'Los Angeles Lakers'
     end
     
-    it 'should assign attributes data relative to the context specified by the index' do
+    it 'should assign values relative to the context specified by the index' do
       @game.gather :index => 2
       @game.date.should == 'Friday, February 6th'
       @game.home_team.should == 'Memphis Grizzlies'
@@ -54,10 +53,10 @@ describe 'Baler context functionality' do
     
     it 'should assign all data within a context to the mapped attribute' do
       @game.gather
-      @game.referees.should == ["Joe Crawford", "Dick Bavetta"]
+      @game.referees.should == ['Joe Crawford', 'Dick Bavetta']
     end
     
-    it 'should assign nil to attributes mapped to nonexistant data' do
+    it 'should assign nil to attributes mapped to nonexistant data (relative to the specified context)' do
       @game.home_score = 112
       @game.gather
       @game.home_score.should be_nil
@@ -75,7 +74,7 @@ describe 'Baler context functionality' do
       @game.mvp.should == 'Dwight Howard'
     end
     
-    it 'should assign nil values to attributes when no element corresponds to context' do
+    it 'should assign nil to attributes for a non-existant context' do
       @invalid_game = InvalidContextGame.new
       @invalid_game.date = '1/2/09'
       @invalid_game.home_team = 'Orlando Magic'

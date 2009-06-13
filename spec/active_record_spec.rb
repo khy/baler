@@ -18,13 +18,13 @@ class Game < ActiveRecord::Base
   end
 end
 
-describe 'Baler active_record functionality' do
+describe 'A class that mixes-in Baler' do
   before(:each) do
     @existing_game_1 = Game.find(1) #LA vs ORL, 02/03 (match in game.html)
     @existing_game_2 = Game.find(2) #NYK vs DET, 03/05 (no match in game.html)
   end
   
-  describe '#build_or_update' do
+  context 'upon .build_or_update' do
     it 'should return an array' do
       Game.build_or_update.should be_a_kind_of(Array)
     end

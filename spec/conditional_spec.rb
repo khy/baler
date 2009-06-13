@@ -33,7 +33,7 @@ class ConditionalGame
     def f_equals_six; @f == 6; end
 end
 
-describe 'Baler conditional gather functionality' do
+describe 'A class that mixes-in Baler' do
   before(:each) do
     @game = ConditionalGame.new
     @game.a = 1
@@ -41,7 +41,7 @@ describe 'Baler conditional gather functionality' do
     @game.c = 3
   end
   
-  describe '#gather' do
+  context 'upon #gather' do
     it 'should gather as expected when all \'if\' conditions are true 
           and all \'unless\' conditions are false' do
       @game.gather :index => 0
@@ -78,7 +78,7 @@ describe 'Baler conditional gather functionality' do
     end
   end
   
-  describe '#build' do
+  context 'upon .build' do
     it 'should not be affected by \'if\' and \'unless\' conditions' do
       games = ConditionalGame.build
       games.length.should == 3

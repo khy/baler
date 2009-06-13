@@ -13,12 +13,12 @@ class UrlMappingGame
   end
 end
 
-describe 'Baler url mapping functionality' do
+describe 'A class that mixes-in Baler' do
   before(:each) do
     @game = UrlMappingGame.new
   end
   
-  describe '#gather' do
+  context 'upon #gather' do
     it 'should resolve the url against the supplied pattern' do
       @game.gather :url_mapping => {'|filename|' => 'game'}
       @game.league.should == "National Basketball Association"

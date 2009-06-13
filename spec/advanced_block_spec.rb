@@ -16,12 +16,12 @@ class AdvancedBlockGame
   end
 end
 
-describe 'Baler advanced block functionality' do
+describe 'A class that mixes-in Baler' do
   before(:each) do
     @game = AdvancedBlockGame.new
   end
   
-  describe '#gather' do
+  context 'upon #gather' do
     it 'should provide the instance to the map block if specified' do
       @game.gather(:index => 0).date.should == "Tuesday, February 3rd 2008-09"
     end

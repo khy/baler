@@ -20,12 +20,12 @@ class MultipleSourceSpec
   end
 end
 
-describe 'Baler multiple source functionality' do
+describe 'A class that mixes-in Baler' do
   before(:each) do
     @game = MultipleSourceSpec.new
   end
   
-  describe '#gather' do
+  context 'upon #gather' do
     it 'should gather the source corresponding to the supplied name' do
       @game.gather :main
       @game.league.should == "National Basketball Association"

@@ -15,8 +15,8 @@ class BuildGame
   end
 end
 
-describe 'Baler build functionality' do
-  describe '#build' do
+describe 'A class that mixes-in Baler' do
+  context 'upon .build' do
     it 'should return an array' do
       BuildGame.build.should be_a_kind_of(Array)
     end
