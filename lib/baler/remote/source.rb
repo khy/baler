@@ -126,7 +126,7 @@ module Baler
         end
         
         def build_instance(options = {})
-          @master.new.gather options.reverse_merge(:force => true)
+          @master.new.gather @name, options.reverse_merge(:force => true)
         end
         
         def non_lookup_attributes
