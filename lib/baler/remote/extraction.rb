@@ -6,8 +6,8 @@ module Baler
       
       DEFAULT_BLOCK = Proc.new{|elements| elements.inner_html}
 
-      def initialize(path, attribute = nil, block = nil, use_context = true)
-        self.path = path
+      def initialize(path = nil, attribute = nil, block = nil, use_context = true)
+        self.path = path || ''
         @attribute = attribute
         @block = block || DEFAULT_BLOCK
         @use_context = use_context

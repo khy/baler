@@ -37,8 +37,12 @@ module Baler
           mappings = args.extract_options
           options = mappings.extract_with_defaults!(DEFAULT_MAP_OPTIONS)
 
-          args.each do |anonymous_path|
-            @source.add_extraction(anonymous_path, nil, options[:use_context], &block)
+          args.each do |arg|
+            if arg.is_a?(Symbol)
+              @source.add_extraction(nil, arg, options[:use_context], &block)
+            else
+              @source.add_extraction(anonymous_path, nil, options[:use_context], &block)
+            end
           end
 
           mappings.each do |attribute, path|

@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 class ContextGame
   include Baler
   
-  attr_accessor :global, :date, :home_team, :home_score, :mvp, :referees
+  attr_accessor :global, :date, :home_team, :home_score, :mvp, :referees, :wrapper
     
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
@@ -13,6 +13,9 @@ class ContextGame
     source.map :home_team => 'span.team.home'
     source.map :home_score => 'ol > span.score.home'
     source.map :referees => '> ul.referees > li'
+    source.map :wrapper do |elements|
+      'GRRRRRRR'
+    end
   end
 end
 
@@ -86,6 +89,11 @@ describe 'A class that mixes-in Baler' do
     it 'should forgo the context if directed to' do
       @game.gather
       @game.global.should == ['National Basketball Association', '2008-09']
+    end
+    
+    it 'should map even if no path is given' do
+      @game.gather
+      @game.wrapper.should == 'GRRRRRRR'
     end
   end
 end
