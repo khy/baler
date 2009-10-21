@@ -9,7 +9,7 @@ class Game < ActiveRecord::Base
     source.set_lookup_attributes :date, :home_team_name, :away_team_name
     
     source.map :date => 'span.date' do |result|
-      result.to_datetime
+      result.first.inner_html.to_datetime
     end
     source.map :home_team_name => 'span.team.home'
     source.map :away_team_name => 'span.team.away'
@@ -30,7 +30,8 @@ describe 'A class that mixes-in Baler' do
     end
     
     it 'should include any existing instances match the lookup values' do
-      Game.build_or_update.should include(@existing_game_1)
+      games = Game.build_or_update
+      games.should include(@existing_game_1)
     end
     
     it 'should not include any existing instances that do not match the lookup values' do

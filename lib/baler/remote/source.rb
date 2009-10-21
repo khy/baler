@@ -4,7 +4,8 @@ module Baler
       autoload :Builder, File.dirname(__FILE__) + '/source/builder'
       
       attr_accessor :name, :url, :context_path, :gather_conditions, :lookup_attributes
-      attr_reader :master, :parser_type
+      attr_writer :parser_adapter
+      attr_reader :master
 
       def initialize(master, name, raw_url_string)
         @master = master
@@ -15,18 +16,6 @@ module Baler
         @gather_conditions = []
         @lookup_attributes = []
       end
-      
-      def parser_type
-        @parser_type || Baler::Parser::DEFAULT_TYPE
-      end
-    
-      def parser_type=(type)
-        unless Baler::Parser::TYPES.include?(type)
-          raise(Baler::Parser::InvalidType)
-        end
-        
-        @parser_type = type
-      end
 
       def builder
         @builder ||= Builder.new(self)
@@ -34,8 +23,7 @@ module Baler
 
       def document(mapping = {})
         resolved_url = @url.resolve(mapping)
-        @documents[resolved_url] ||= 
-          Baler::Parser::Document.for(parser_type, resolved_url, context_path)
+        @documents[resolved_url] ||= Baler::Parser.document(@parser_adapter, resolved_url, context_path)
       end
 
       def mapped_attributes

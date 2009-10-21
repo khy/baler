@@ -1,23 +1,23 @@
 module Baler
   module Parser
-    class Element
+    class Collection
       include Parser::Support::Proxy
-      
-      def initialize(document, element)
+
+      def initialize(document, collection)
         @document = document
-        @element = element
+        @collection = collection
       end
 
       def subject
-        @element
+        @collection
       end
-      
+
       def wrap(object)
         @document.wrap(object)
       end
-      
+
       def inspect
-        "#<#{self.class} #{@element.subject}>"
+        "#<#{self.class} #{@collection.subject}>"
       end
     end
   end

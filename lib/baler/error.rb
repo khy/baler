@@ -8,7 +8,7 @@ module Baler
     class Error < Baler::Error; end
     class InvalidType < Error; end
   end
-  
+
   module ORM
     class Error < Baler::Error; end
     class ClassNotRecognized < Error; end

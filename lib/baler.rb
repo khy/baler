@@ -12,5 +12,5 @@ module Baler
   end
 end
 
-require File.dirname(__FILE__) + '/baler/error'
 require File.dirname(__FILE__) + '/baler/support'
+require File.dirname(__FILE__) + '/baler/error'
