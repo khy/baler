@@ -81,11 +81,12 @@ module Baler
         
         Array.new(document(options[:url_mapping]).context_size) do |context_index|
           gather_options = options.reverse_merge(:index => context_index)
+          instance = build_instance(gather_options)
           
-          if existing_instance = existing_instance_for(context_index)
-            existing_instance.gather gather_options.reverse_merge(:attributes => non_lookup_attributes)
+          if existing_instance = existing_instance_for(instance)
+            existing_instance.gather(gather_options.reverse_merge(:attributes => non_lookup_attributes))
           else
-            build_instance gather_options
+            instance
           end
         end
       end
@@ -95,9 +96,9 @@ module Baler
           gather_conditions.all?{|gather_condition| gather_condition.met?(instance)}
         end
 
-        def existing_instance_for(index)
+        def existing_instance_for(instance)
           if lookup_defined?
-            ORM.for(@master).find(build_lookup_hash(index))
+            ORM.for(@master).find(build_lookup_hash(instance))
           end
         end
 
@@ -105,11 +106,9 @@ module Baler
           @lookup_attributes.length > 0
         end
 
-        def build_lookup_hash(index)
+        def build_lookup_hash(instance)
           lookup_hash = {}
-          @lookup_attributes.each do |attribute|
-            lookup_hash[attribute.to_sym] = extraction_for(attribute).value(document, index)
-          end
+          @lookup_attributes.each{|attribute| lookup_hash[attribute.to_sym] = instance[attribute.to_sym]}
           lookup_hash
         end
         
