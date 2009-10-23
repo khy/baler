@@ -27,7 +27,7 @@ module Baler
         end
 
         def block_value(elements, instance)
-          if elements
+          if elements and !elements.empty?
             case block.arity
             when 1: block[elements]
             when 2: block[elements, instance]

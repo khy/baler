@@ -21,11 +21,11 @@ class StandardBlockGame
     end
     
     source.map :away_wins => 'span.team.away' do |result|
-      result.first.attribute_value(:record).split('-')[0].to_i
+      result.first.attribute(:record).split('-')[0].to_i
     end
     
     source.map :away_losses => 'span.team.away' do |result|
-      result.first.attribute_value(:record).split('-')[1].to_i
+      result.first.attribute(:record).split('-')[1].to_i
     end
   end
 end
