@@ -17,7 +17,7 @@ module Baler
       end
 
       def inspect
-        "#<#{self.class} #{@collection.subject}>"
+        "#<#{self.class}[\n#{@collection.join(",\n")}]>"
       end
     end
   end

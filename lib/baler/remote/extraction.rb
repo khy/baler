@@ -1,31 +1,36 @@
 module Baler
   module Remote
     class Extraction
-      attr_accessor :attribute, :use_context, :block
-      attr_reader :path
+      attr_reader :attribute
       
-      DEFAULT_BLOCK = Proc.new{|elements| elements.inner_html}
+      DEFAULT_BLOCK = Proc.new{|result| Baler::Parser.filter(result)}
 
       def initialize(path = nil, attribute = nil, block = nil, use_context = true)
         @path = (path || '').squeeze(' ').strip
         @attribute = attribute
-        @block = block || DEFAULT_BLOCK
+        @block = block
         @use_context = use_context
       end
-
-      alias use_context? use_context
       
+      def use_context?
+        @use_context
+      end
+
       def value(document, instance, index = nil)
         elements = elements(document, index)
-        Baler::Parser.filter block_value(elements, instance)
+        block_value(elements, instance)
       end
 
       protected
+        def block
+          @block || DEFAULT_BLOCK
+        end
+
         def block_value(elements, instance)
-          unless elements.empty?
-            case @block.arity
-            when 1: @block.call(elements)
-            when 2: @block.call(elements, instance)
+          if elements
+            case block.arity
+            when 1: block[elements]
+            when 2: block[elements, instance]
             else    nil
             end
           end
