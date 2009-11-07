@@ -51,14 +51,6 @@ shared_examples_for 'a parser document' do
     end
   end
   
-  context '#context_element(index)' do
-    it 'should return the specified element for the documents context path' do
-      context_element_result = proxy_document('div.comment').context_element(1)
-      search_result = proxy_document.search('div.comment')[1]
-      context_element_result.should match_underlying_html_of(search_result)
-    end
-  end
-  
   context '#context_size' do
     it 'should return the number of elements referenced by the context' do
       proxy_document('div.comment').context_size.should == proxy_document.search('div.comment').size

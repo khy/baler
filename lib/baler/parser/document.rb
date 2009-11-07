@@ -32,7 +32,7 @@ module Baler
         elsif not index
           absolute_elements_for absolute_path(path)
         else
-          if context = context_element(index)
+          if context = context_elements[index]
             context.search path
           else
             collection
@@ -44,13 +44,9 @@ module Baler
         results = @document.search(path)
         wrap(index ? results[index] : results)
       end
-    
-      def context_element(index)
-        absolute_elements_for(@context_path, index)
-      end
 
       def context_size
-        absolute_elements_for(@context_path).size
+        context_elements.size
       end
       
       def inspect
@@ -64,6 +60,10 @@ module Baler
       
         def subject
           @document
+        end
+        
+        def context_elements
+          @context_elements ||= absolute_elements_for(@context_path)
         end
     end
   end
