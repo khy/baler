@@ -6,7 +6,11 @@ class Game < ActiveRecord::Base
   
   set_remote_source GAME_PATH do |source|
     source.set_context 'html > body > ol > li'
-    source.set_lookup_attributes :date, :home_team_name, :away_team_name
+
+    source.set_lookup :date, :home_team_name, :away_team_name do |instance|
+      Game.find(:first, :conditions => {:date => instance.date, :home_team_name => instance.home_team_name,
+        :away_team_name => instance.away_team_name})
+    end
     
     source.map :date => 'span.date' do |result|
       result.first.inner_html.to_datetime

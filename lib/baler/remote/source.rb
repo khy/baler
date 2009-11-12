@@ -3,7 +3,8 @@ module Baler
     class Source
       autoload :Builder, File.dirname(__FILE__) + '/source/builder'
       
-      attr_accessor :name, :url, :context_path, :gather_conditions, :lookup_attributes
+      attr_accessor :name, :url, :context_path, :gather_conditions,
+        :lookup_block, :lookup_attributes
       attr_writer :parser_adapter
       attr_reader :master
 
@@ -11,6 +12,7 @@ module Baler
         @master = master
         @name = name
         @url = URL.new(raw_url_string)
+
         @documents = {}
         @extractions = []
         @gather_conditions = []
@@ -83,7 +85,7 @@ module Baler
           gather_options = options.reverse_merge(:index => context_index)
           instance = build_instance(gather_options)
           
-          if existing_instance = existing_instance_for(instance)
+          if existing_instance = lookup_existing_instance(instance)
             existing_instance.gather(gather_options.reverse_merge(:attributes => non_lookup_attributes))
           else
             instance
@@ -96,16 +98,6 @@ module Baler
           gather_conditions.all?{|gather_condition| gather_condition.met?(instance)}
         end
 
-        def existing_instance_for(instance)
-          if lookup_defined?
-            ORM.for(@master).find(build_lookup_hash(instance))
-          end
-        end
-
-        def lookup_defined?
-          @lookup_attributes.length > 0
-        end
-
         def build_lookup_hash(instance)
           lookup_hash = {}
           @lookup_attributes.each{|attribute| lookup_hash[attribute.to_sym] = instance[attribute.to_sym]}
@@ -116,6 +108,10 @@ module Baler
           @master.new.gather @name, options.reverse_merge(:force => true)
         end
         
+        def lookup_existing_instance(instance)
+          @lookup_block.call(instance) if @lookup_block
+        end
+
         def non_lookup_attributes
           mapped_attributes - @lookup_attributes
         end

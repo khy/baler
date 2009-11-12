@@ -78,8 +78,9 @@ module Baler
         
         # Defines the attributes that will be used by <tt>#build_or_update</tt> to lookup class
         # instances using the ORM
-        def set_lookup_attributes(*attributes)
-          @source.lookup_attributes = attributes
+        def set_lookup(*attributes, &block)
+          @source.lookup_attributes += attributes
+          @source.lookup_block = block if block
         end
 
         # Defines which parser Baler will use
