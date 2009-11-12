@@ -76,8 +76,9 @@ module Baler
           @source.context_path = path
         end
         
-        # Defines the attributes that will be used by <tt>#build_or_update</tt> to lookup class
-        # instances using the ORM
+        # Defines the block that will be used by <tt>#build_or_update</tt> to lookup class
+        # instances, along with the attributes that should be excluded when the returned instance
+        # is updated via gather
         def set_lookup(*attributes, &block)
           @source.lookup_attributes += attributes
           @source.lookup_block = block if block
