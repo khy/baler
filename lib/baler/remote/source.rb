@@ -86,7 +86,7 @@ module Baler
           instance = build_instance(gather_options)
           
           if existing_instance = lookup_existing_instance(instance)
-            existing_instance.gather(gather_options.reverse_merge(:attributes => non_lookup_attributes))
+            regather existing_instance, gather_options.reverse_merge(:attributes => non_lookup_attributes)
           else
             instance
           end
@@ -105,7 +105,7 @@ module Baler
         end
         
         def build_instance(options = {})
-          @master.new.gather @name, options.reverse_merge(:force => true)
+          regather @master.new, options.reverse_merge(:force => true)
         end
         
         def lookup_existing_instance(instance)
@@ -118,6 +118,10 @@ module Baler
         
         def extraction_for(attribute)
           @extractions.select{|extraction| extraction.attribute == attribute}.last
+        end
+
+        def regather(instance, options = {})
+          instance.gather @name, options
         end
     end
   end

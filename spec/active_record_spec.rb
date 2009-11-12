@@ -66,5 +66,12 @@ describe 'A class that mixes-in Baler' do
         game.id.should == first_game.id
       end
     end
+
+    it 'should gather from the same remote source at all times' do
+      first_game = Game.first
+      Game.build_or_update(:secondary).each do |game|
+        game.home_team_name.should == 'Jah Jah Jock Straps'
+      end
+    end
   end
 end
