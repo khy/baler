@@ -31,6 +31,22 @@ module Baler
 
         object
       end
+
+      def wrap(object)
+        case object
+        when Parser::Adapter::Base::Element then element(object)
+        when Parser::Adapter::Base::Collection then collection(object)
+        else object
+        end
+      end
+
+      def element(object)
+        Parser::Element.new(object)
+      end
+
+      def collection(object = [])
+        Parser::Collection.new(object)
+      end
     end
   end
 end

@@ -3,8 +3,7 @@ module Baler
     class Collection
       include Parser::Support::Proxy
 
-      def initialize(document, collection)
-        @document = document
+      def initialize(collection)
         @collection = collection
       end
 
@@ -13,7 +12,7 @@ module Baler
       end
 
       def wrap(object)
-        @document.wrap(object)
+        Parser.wrap(object)
       end
 
       def inspect

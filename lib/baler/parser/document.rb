@@ -9,19 +9,7 @@ module Baler
       end
 
       def wrap(object)
-        case object
-        when Parser::Adapter::Base::Element then element(object)
-        when Parser::Adapter::Base::Collection then collection(object)
-        else object
-        end
-      end
-
-      def element(object)
-        Parser::Element.new(self, object)
-      end
-      
-      def collection(object = [])
-        Parser::Collection.new(self, object)
+        Parser.wrap(object)
       end
 
       def relative_elements_for(path, index = nil)
