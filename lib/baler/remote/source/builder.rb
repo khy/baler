@@ -72,8 +72,8 @@ module Baler
         #
         # A context should correspond to a single instance of the master class. So, if BlogPost is the
         # master class, a context element should contain all of the attributes for a single post.
-        def set_context(path)
-          @source.context_path = path
+        def set_context(path = nil, &block)
+          @source.context = path || block
         end
         
         # Defines the block that will be used by <tt>#build_or_update</tt> to lookup class

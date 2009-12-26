@@ -32,6 +32,22 @@ class InvalidContextGame
   end  
 end
 
+class BlockContextGame
+  include Baler
+
+  attr_accessor :date, :home_team
+
+  set_remote_source GAME_PATH do |source|
+    source.set_context do |document|
+      document.search('html > body > h1.global.league').inner_html == 'National Basketball Association' ?
+        'html > body > ol > li' : 'html > body > ol > li > jah'
+    end
+
+    source.map :date => '> span.date'
+    source.map :home_team => 'span.team.home'
+  end
+end
+
 describe 'A class that mixes-in Baler' do
   before(:each) do
     @game = ContextGame.new
@@ -94,6 +110,13 @@ describe 'A class that mixes-in Baler' do
     it 'should map even if no path is given' do
       @game.gather
       @game.wrapper.should == 'GRRRRRRR'
+    end
+
+    it 'should use the result of a supplied block as the context' do
+      @block_game = BlockContextGame.new
+      @block_game.gather :index => 0
+      @block_game.date.should == 'Tuesday, February 3rd'
+      @block_game.home_team.should == 'Los Angeles Lakers'
     end
   end
 end

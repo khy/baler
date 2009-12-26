@@ -3,7 +3,7 @@ module Baler
     class Source
       autoload :Builder, File.dirname(__FILE__) + '/source/builder'
       
-      attr_accessor :name, :url, :context_path, :gather_conditions,
+      attr_accessor :name, :url, :context, :gather_conditions,
         :lookup_block, :lookup_attributes
       attr_writer :parser_adapter
       attr_reader :master
@@ -25,7 +25,7 @@ module Baler
 
       def document(mapping = {})
         resolved_url = @url.resolve(mapping)
-        @documents[resolved_url] ||= Baler::Parser.document(@parser_adapter, resolved_url, context_path)
+        @documents[resolved_url] ||= Baler::Parser.document(@parser_adapter, resolved_url, context)
       end
 
       def mapped_attributes

@@ -2,12 +2,10 @@ module Baler
   module Parser
     class Document
       include Parser::Support::Proxy
-      
-      attr_accessor :context_path
-    
-      def initialize(document, context_path = nil)
+
+      def initialize(document, context_object = nil)
         @document = document
-        @context_path = context_path
+        @context_object = context_object
       end
 
       def wrap(object)
@@ -27,7 +25,7 @@ module Baler
       end
 
       def relative_elements_for(path, index = nil)
-        if @context_path.nil?
+        if context_path.nil?
           absolute_elements_for(path, index)
         elsif not index
           absolute_elements_for absolute_path(path)
@@ -53,6 +51,11 @@ module Baler
         "#<#{self.class} context: '#{@context_path}'\n#{@document.subject}>"
       end
       
+      def context_path
+        @context_path ||= @context_object.is_a?(Proc) ?
+          @context_object.call(@document) : @context_object
+      end
+
       protected
         def absolute_path(relative_path)
           "#{@context_path} #{relative_path}".strip
@@ -63,7 +66,7 @@ module Baler
         end
         
         def context_elements
-          @context_elements ||= absolute_elements_for(@context_path)
+          @context_elements ||= absolute_elements_for(context_path)
         end
     end
   end
