@@ -25,7 +25,8 @@ module Baler
           def to_array
             ::Array.new(@collection)
           end
-          
+          alias_method :to_ary, :to_array
+
           def inspect
             "#<#{self.class}\n[#{@collection.join(",\n")}]\n>"
           end
