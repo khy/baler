@@ -1,6 +1,8 @@
 module Baler
   module Parser
     class Document
+      autoload :Collection, File.dirname(__FILE__) + '/document/collection'
+
       include Parser::Support::Proxy
 
       def initialize(document, context_object = nil)
