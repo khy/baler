@@ -43,6 +43,11 @@ module Baler
         wrap(index ? results[index] : results)
       end
 
+      def context_path
+        @context_path ||= @context_object.is_a?(Proc) ?
+          @context_object.call(@document) : @context_object
+      end
+
       def context_size
         context_elements.size
       end
@@ -50,15 +55,10 @@ module Baler
       def inspect
         "#<#{self.class} context: '#{@context_path}'\n#{@document.subject}>"
       end
-      
-      def context_path
-        @context_path ||= @context_object.is_a?(Proc) ?
-          @context_object.call(@document) : @context_object
-      end
 
       protected
         def absolute_path(relative_path)
-          "#{@context_path} #{relative_path}".strip
+          "#{context_path} #{relative_path}".strip
         end
       
         def subject
