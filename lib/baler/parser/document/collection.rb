@@ -2,6 +2,8 @@ module Baler
   module Parser
     class Document
       class Collection
+        attr_reader :documents
+
         def initialize(documents)
           @documents = documents
         end
