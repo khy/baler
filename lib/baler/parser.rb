@@ -10,14 +10,21 @@ module Baler
     DEFAULT_DOCUMENT_ADAPTER = DOCUMENT_ADAPTERS.keys.first
 
     class << self
-      def document(type_or_adapter, url, context_path = nil)
-        if adapter_class = DOCUMENT_ADAPTERS[(type_or_adapter || DEFAULT_DOCUMENT_ADAPTER)]
-          adapter = adapter_class.new(url)
+      def document(*args)
+        type_or_adapters = args.shift
+        if adapter_class = DOCUMENT_ADAPTERS[type_or_adapters]
+          urls = args.shift
+          adapters = urls.is_a?(Array) ? urls.map{|url| adapter_class.new(url)} : adapter_class.new(urls)
         else
-          adapter = type_or_adapter
+          adapters = type_or_adapters
         end
 
-        Document.new(adapter, context_path)
+        context_path = args.shift
+        if adapters.is_a?(Array)
+          Document::Collection.new(adapters.map{|adapter| Document.new(adapter, context_path)})
+        else
+          Document.new(adapters, context_path)
+        end
       end
 
       def filter(object)
