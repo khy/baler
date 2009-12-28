@@ -3,15 +3,15 @@ module Baler
     class Source
       autoload :Builder, File.dirname(__FILE__) + '/source/builder'
       
-      attr_accessor :name, :url, :context, :gather_conditions,
+      attr_accessor :name, :raw_urls, :context, :gather_conditions,
         :lookup_block, :lookup_attributes
       attr_writer :parser_adapter
       attr_reader :master
 
-      def initialize(master, name, raw_url_string)
+      def initialize(master, name, raw_urls = nil)
         @master = master
         @name = name
-        @url = URL.new(raw_url_string)
+        @raw_urls = raw_urls || []
 
         @documents = {}
         @extractions = []
@@ -24,8 +24,8 @@ module Baler
       end
 
       def document(mapping = {})
-        resolved_url = @url.resolve(mapping)
-        @documents[resolved_url] ||= Baler::Parser.document(@parser_adapter, resolved_url, context)
+        resolved_urls = resolved_urls(mapping)
+        @documents[resolved_urls.to_s] ||= Baler::Parser.document(@parser_adapter, resolved_urls, context)
       end
 
       def mapped_attributes
@@ -40,6 +40,14 @@ module Baler
         @gather_conditions << GatherCondition.new(object, expected_value)
       end
       
+      def resolved_urls(mapping)
+        raise Remote::Source::URLNotSpecified unless @raw_urls
+
+        [@raw_urls].flatten.map do |raw_url|
+          resolve(raw_url, mapping)
+        end
+      end
+
       DEFAULT_GATHER_OPTIONS = {
         :index => 0,
         :url_mapping => {},
@@ -122,6 +130,18 @@ module Baler
 
         def regather(instance, options = {})
           instance.gather @name, options
+        end
+
+        def resolve(raw_url, mapping)
+          resolved_url = raw_url.dup
+          mapping.each do |pattern, replacement|
+            unless [String, Regexp].include?(pattern.class)
+              pattern = pattern.to_s
+            end
+
+            resolved_url.gsub! pattern, replacement
+          end
+          resolved_url
         end
     end
   end

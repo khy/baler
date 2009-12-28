@@ -9,8 +9,10 @@ module Baler
     class InvalidType < Error; end
   end
 
-  module ORM
-    class Error < Baler::Error; end
-    class ClassNotRecognized < Error; end
+  module Remote
+    class Source
+      class Error < Baler::Error; end
+      class URLNotSpecified < Error; end
+    end
   end
 end
