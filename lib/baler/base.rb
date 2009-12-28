@@ -14,7 +14,7 @@ module Baler
       #
       # The details of the remote source are defined within the block, using
       # the <tt>Remote::Source::Builder</tt> instance that is yielded to it.
-      def set_remote_source(arg)
+      def set_remote_source(arg = nil)
         name, url = arg.is_a?(Hash) ? arg.shift : [nil, arg]
         remote_source = Baler::Remote::Source.new(self, name, url)
         

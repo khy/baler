@@ -84,6 +84,11 @@ module Baler
           @source.lookup_block = block if block
         end
 
+        # Define the URL(s) of the source
+        def set_url(raw_urls)
+          @source.raw_urls = raw_urls
+        end
+
         # Defines which parser Baler will use
         def uses(parser_type)
           @source.parser_type = parser_type
