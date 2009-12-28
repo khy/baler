@@ -12,7 +12,7 @@ module Baler
     class << self
       def document(*args)
         type_or_adapters = args.shift
-        if adapter_class = DOCUMENT_ADAPTERS[type_or_adapters]
+        if adapter_class = DOCUMENT_ADAPTERS[type_or_adapters || DEFAULT_DOCUMENT_ADAPTER]
           urls = args.shift
           adapters = urls.is_a?(Array) ? urls.map{|url| adapter_class.new(url)} : adapter_class.new(urls)
         else
