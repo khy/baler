@@ -10,6 +10,10 @@ module Baler
         @context_object = context_object
       end
 
+      def subject
+        @document
+      end
+
       def wrap(object)
         Parser.wrap(object)
       end
