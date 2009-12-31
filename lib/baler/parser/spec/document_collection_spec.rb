@@ -22,6 +22,15 @@ shared_examples_for 'a parser document collection' do
         combined_elements.should include(element)
       end
     end
+
+    it 'should apply index across documents' do
+      documents = proxy_documents('div.comment')
+      document_collection = Baler::Parser::Document::Collection.new(documents)
+
+      first_context_size = documents[0].context_size
+      document_collection.relative_elements_for('span', first_context_size + 1).should
+        match_underlying_html_of(documents[1].relative_elements_for('span', 1))
+    end
   end
 
   context 'absolute_elements_for(path, index = nil)' do
@@ -30,7 +39,7 @@ shared_examples_for 'a parser document collection' do
         absolute_elements_for('span').should be_a_kind_of Baler::Parser::Collection
     end
 
-    it 'should return a concatenation of the the relative elements for the member documents' do
+    it 'should return a concatenation of the the absolute elements for the member documents' do
       documents = proxy_documents('div.comment')
       document_collection = Baler::Parser::Document::Collection.new(documents)
 
@@ -44,6 +53,15 @@ shared_examples_for 'a parser document collection' do
       collection_elements.each do |element|
         combined_elements.should include(element)
       end
+    end
+
+    it 'should apply index across documents' do
+      documents = proxy_documents('div.comment')
+      document_collection = Baler::Parser::Document::Collection.new(documents)
+
+      first_span_count = documents[0].absolute_elements_for('span').size
+      document_collection.absolute_elements_for('span', first_span_count + 1).should
+        match_underlying_html_of(documents[1].absolute_elements_for('span', 1))
     end
   end
 

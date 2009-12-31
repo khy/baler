@@ -9,11 +9,14 @@ module Baler
         end
 
         def relative_elements_for(path, index = nil)
-          map_and_combine_documents{|document| document.relative_elements_for(path, index)}
+          index ?
+            elements_for_index(path, index) :
+            map_and_combine_documents{|document| document.relative_elements_for(path)}
         end
 
         def absolute_elements_for(path, index = nil)
-          map_and_combine_documents{|document| document.absolute_elements_for(path, index)}
+          elements = map_and_combine_documents{|document| document.absolute_elements_for(path)}
+          index ? elements[index] : elements
         end
 
         def context_paths
@@ -33,6 +36,17 @@ module Baler
             @documents.map do |document|
               yield(document) if block_given?
             end.inject{|result, elements| result + elements}
+          end
+
+          def elements_for_index(path, index)
+            relative_index = index
+            @documents.each do |document|
+              if document.context_size >= relative_index
+                return document.relative_elements_for(path, relative_index)
+              else
+                relative_index -= document.context_size
+              end
+            end
           end
       end
     end
