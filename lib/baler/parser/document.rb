@@ -19,7 +19,7 @@ module Baler
       end
 
       def relative_elements_for(path, index = nil)
-        if context_path.nil?
+        if context_path.nil? or context_path.strip == ''
           absolute_elements_for(path, index)
         elsif not index
           absolute_elements_for absolute_path(path)
