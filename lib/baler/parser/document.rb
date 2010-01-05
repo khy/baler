@@ -19,7 +19,7 @@ module Baler
       end
 
       def relative_elements_for(path, index = nil)
-        if context_path.nil? or context_path.strip == ''
+        if context_blank?
           absolute_elements_for(path, index)
         elsif not index
           absolute_elements_for absolute_path(path)
@@ -45,6 +45,10 @@ module Baler
       def context_size
         context_elements.size
       end
+
+      def maximum_index(path)
+        context_blank? ? absolute_elements_for(path).size : context_size
+      end
       
       def inspect
         "#<#{self.class} context: '#{@context_path}'\n#{@document.subject}>"
@@ -61,6 +65,10 @@ module Baler
         
         def context_elements
           @context_elements ||= absolute_elements_for(context_path)
+        end
+
+        def context_blank?
+          context_path.nil? or context_path.strip == ''
         end
     end
   end

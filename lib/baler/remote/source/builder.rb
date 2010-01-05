@@ -85,8 +85,9 @@ module Baler
         end
 
         # Define the URL(s) of the source
-        def set_url(raw_urls)
-          @source.raw_urls = raw_urls
+        def set_url(*raw_urls, &block)
+          raw_urls = raw_urls.first if raw_urls.size == 1
+          @source.set_url(raw_urls, &block)
         end
 
         # Defines which parser Baler will use

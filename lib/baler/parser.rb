@@ -27,6 +27,12 @@ module Baler
         end
       end
 
+      def adapter(type, url)
+        if adapter_class = DOCUMENT_ADAPTERS[type || DEFAULT_DOCUMENT_ADAPTER]
+          adapter_class.new(url)
+        end
+      end
+
       def filter(object)
         if object.is_a? Parser::Collection
           object = object.length <= 1 ? object.first : object.to_array.map{|e| e.inner_html}

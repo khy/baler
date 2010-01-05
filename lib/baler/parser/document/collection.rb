@@ -41,10 +41,11 @@ module Baler
           def elements_for_index(path, index)
             relative_index = index
             @documents.each do |document|
-              if document.context_size >= relative_index
+              maximum_index = document.maximum_index(path)
+              if maximum_index >= relative_index
                 return document.relative_elements_for(path, relative_index)
               else
-                relative_index -= document.context_size
+                relative_index -= maximum_index
               end
             end
           end

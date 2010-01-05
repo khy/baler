@@ -12,18 +12,6 @@ class BasicGame
   end
 end
 
-class BlockURLGame
-  include Baler
-
-  attr_accessor :date
-
-  set_remote_source do |source|
-    source.set_url GAME_PATH
-
-    source.map :date => 'html > body > ol > li > span.date'
-  end
-end
-
 describe 'A class that mixes-in Baler' do
   before(:each) do
     @game = BasicGame.new
@@ -70,12 +58,6 @@ describe 'A class that mixes-in Baler' do
       @game.gather :index => false
       @game.date.should == ['Tuesday, February 3rd', 'Wednesday, February 4th', 'Friday, February 6th']
       @game.home_team.should == ['Los Angeles Lakers', 'New York Knicks', 'Memphis Grizzlies']
-    end
-
-    it 'should use the URL specified by Builder#set_url' do
-      @game = BlockURLGame.new
-      @game.gather
-      @game.date.should == 'Tuesday, February 3rd'
     end
   end
 end
