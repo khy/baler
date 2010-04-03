@@ -53,5 +53,3 @@ So, lets see how it works.
   => [#<Game:0x8ce9c @home_team="Cleveland Cavaliers", @away_team="Orlando Magic", @date="Wednesday, May 27th, 2009", @start_time="8:05 EST">, #<Game:0x644ec @home_team="LA Lakers", ...]
   >> Game.new.gather :index => 1
   => #<Game:0x626d8 @home_team="LA Lakers", @away_team="Denver Nuggets", @date="Wednesday, May 27th, 2009", @start_time="10:05 EST">
-
-And that's just the beginning. Check out RDoc documentation for the different tools that Baler provides for organizing the way you gather remote data.
